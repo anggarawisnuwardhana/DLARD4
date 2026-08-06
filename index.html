@@ -260,7 +260,7 @@
                             
                             <div class="d-flex align-items-center gap-2">
                                 <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
-                                <select id="filterKaryawanMode" class="form-select form-select-sm" onchange="updatRinoryawanFilterUI()">
+                                <select id="filterKaryawanMode" class="form-select form-select-sm" onchange="updatekaryawanFilterUI()">
                                     <option value="all">Seluruh Waktu</option>
                                     <option value="date">Per Tanggal</option>
                                     <option value="month" selected>Per Bulan</option>
@@ -276,15 +276,15 @@
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <div class="card p-4 border border-primary border-2 shadow-sm h-100 bg-white">
-                                    <h5 class="fw-bold text-primary border-bottom border-primary pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Rino NUR BARIZA</h5>
+                                    <h5 class="fw-bold text-primary border-bottom border-primary pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Rino</h5>
                                     
                                     <div class="mb-2">
                                         <label class="form-label small fw-bold text-secondary mb-0">Umur</label>
-                                        <p class="mb-2 fw-semibold">24 Tahun</p>
+                                        <p class="mb-2 fw-semibold">20 Tahun</p>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-secondary mb-0">Alamat</label>
-                                        <p class="mb-2 fw-semibold">DUSUN SIMADU TIMUR RT 07 / RW 08 , DESA BANYUMUDAL , PEMALANG</p>
+                                        <p class="mb-2 fw-semibold">BIAK, PAPUA</p>
                                     </div>
 
                                     <div class="mb-3 p-3 bg-light border rounded">
@@ -316,7 +316,7 @@
                             
                             <div class="col-md-6">
                                 <div class="card p-4 border border-info border-2 shadow-sm h-100 bg-white">
-                                    <h5 class="fw-bold text-info border-bottom border-info pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Alfred ALWI ATTHOHIR</h5>
+                                    <h5 class="fw-bold text-info border-bottom border-info pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Alfred</h5>
                                     
                                     <div class="mb-2">
                                         <label class="form-label small fw-bold text-secondary mb-0">Umur</label>
@@ -324,7 +324,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-secondary mb-0">Alamat</label>
-                                        <p class="mb-2 fw-semibold">PERUM. BLURU PERMAI FP-01, SIDOARJO</p>
+                                        <p class="mb-2 fw-semibold">BIAK, PAPUA</p>
                                     </div>
                                     
                                     <div class="mb-3 p-3 bg-light border rounded">
@@ -512,11 +512,11 @@
                 <div class="tab-pane fade" id="laporan">
                     <div class="card p-4">
                         <h4 class="fw-bold mb-3"><i class="fa-solid fa-file-excel text-success me-2"></i> Export & Download Laporan Excel</h4>
-                        <p class="text-muted">Generate & Download rRinopitulasi data harian lengkap dengan rincian item, pengeluaran, dan total penghasilan bersih.</p>
+                        <p class="text-muted">Generate & Download rekapitulasi data harian lengkap dengan rincian item, pengeluaran, dan total penghasilan bersih.</p>
                         <hr class="text-muted">
                         <div class="row g-3 align-items-end">
                             <div class="col-md-5">
-                                <label class="form-label fw-semibold">Bulan RRinop</label>
+                                <label class="form-label fw-semibold">Bulan Rekap</label>
                                 <input type="month" id="excelMonth" class="form-control">
                             </div>
                             <div class="col-md-7">
@@ -981,7 +981,7 @@
     async function sendData(payload) {
         if(isProcessing) return;
         isProcessing = true;
-        showLoading(true, payload.action === 'generate_rRinop' ? "Menyusun Excel..." : "Menyimpan & Mengakumulasi Data...");
+        showLoading(true, payload.action === 'generate_rekap' ? "Menyusun Excel..." : "Menyimpan & Mengakumulasi Data...");
         try {
             const res = await fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -993,7 +993,7 @@
             if(data.status === 'success') {
                 showToast(data.message, "success");
                 
-                if(payload.action === 'generate_rRinop' && data.url) {
+                if(payload.action === 'generate_rekap' && data.url) {
                     window.location.href = data.url; 
                 } else {
                     document.querySelectorAll('input[type="number"]:not(.qty-input), input[type="text"]:not([readonly])').forEach(el => el.value = '');
@@ -1064,8 +1064,8 @@
 
     function downloadExcelReportServer() {
         let val = document.getElementById('excelMonth').value;
-        if(!val) { showToast("Pilih bulan rRinop!", "warning"); return; }
-        sendData({ action: "generate_rRinop", month: val });
+        if(!val) { showToast("Pilih bulan rekap!", "warning"); return; }
+        sendData({ action: "generate_rekap", month: val });
     }
 
     function updateHistoryFilterUI() {
@@ -1610,7 +1610,7 @@
         });
     }
 
-    function updatRinoryawanFilterUI() {
+    function updatekaryawanFilterUI() {
         const mode = document.getElementById('filterKaryawanMode').value;
         document.getElementById('inputFilterKaryawanDate').classList.add('d-none');
         document.getElementById('inputFilterKaryawanMonth').classList.add('d-none');
