@@ -1562,12 +1562,12 @@
         URUTAN_MENU.forEach(m => {
             let qty = qtyMap[m.toLowerCase()] || 0;
             let titleName = toTitleCase(m);
-            let colorClass = m.toLowerCase().includes('Rino') ? 'primary' : 'info';
+            let colorClass = m.toLowerCase().includes('rino') ? 'primary' : 'info';
             let borderColor = isDark ? 'border-secondary' : `border-${colorClass}`;
             
             rincianGlobalHtml += `<div class="col-6 col-md-4 col-lg-3">
                                     <div class="d-flex justify-content-between align-items-center bg-body border ${borderColor} rounded px-2 py-2 shadow-sm">
-                                        <span class="text-secondary small fw-semibold">${titleName}</span>
+                                        <span class="text-${colorClass} small fw-bold">${titleName}</span>
                                         <span class="badge bg-${colorClass}">${qty}</span>
                                     </div>
                                   </div>`;
@@ -1649,18 +1649,18 @@
         let totalLayananRino = 0;
         let totalLayananAlfred = 0;
         
-        let itemRino = { 'keren-Rino': 0, 'ganteng-Rino': 0, 'elegan-Rino': 0, 'anak-Rino': 0, 'ayahanak-Rino': 0, 'jenggot-Rino': 0 };
-        let itemAlfred = { 'keren-Alfred': 0, 'ganteng-Alfred': 0, 'elegan-Alfred': 0, 'anak-Alfred': 0, 'ayahanak-Alfred': 0, 'jenggot-Alfred': 0 };
+        let itemRino = { 'keren-rino': 0, 'ganteng-rino': 0, 'elegan-rino': 0, 'anak-rino': 0, 'ayahanak-rino': 0, 'jenggot-rino': 0 };
+        let itemAlfred = { 'keren-alfred': 0, 'ganteng-alfred': 0, 'elegan-alfred': 0, 'anak-alfred': 0, 'ayahanak-alfred': 0, 'jenggot-alfred': 0 };
 
         filteredPenjualan.forEach(r => {
             let itemName = String(r.item).toLowerCase();
             let subtotal = Number(r.subtotal || 0);
             let qty = Number(r.qty || 0);
 
-            if (itemName.includes('Rino')) {
+            if (itemName.includes('rino')) {
                 totalLayananRino += subtotal;
                 if(itemRino[itemName] !== undefined) itemRino[itemName] += qty;
-            } else if (itemName.includes('Alfred')) {
+            } else if (itemName.includes('alfred')) {
                 totalLayananAlfred += subtotal;
                 if(itemAlfred[itemName] !== undefined) itemAlfred[itemName] += qty;
             }
@@ -1672,9 +1672,9 @@
             let ket = String(r.keterangan || '').toLowerCase();
             let nom = Number(r.nominal || 0);
             
-            if(ket.includes('kasbon Rino')) {
+            if(ket.includes('kasbon rino')) {
                 kasbonRino += nom;
-            } else if(ket.includes('kasbon Alfred')) {
+            } else if(ket.includes('kasbon alfred')) {
                 kasbonAlfred += nom;
             }
         });
