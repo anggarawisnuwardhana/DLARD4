@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System POS - DLARD 2 Barbershop</title>
+    <title>System POS - DLARD 4 Barbershop</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -90,7 +90,7 @@
 
 <nav class="navbar navbar-dark sticky-top">
     <div class="container-fluid px-4">
-        <span class="navbar-brand mb-0 h1"><i class="fa-solid fa-scissors me-2"></i>DLARD 2 BARBERSHOP</span>
+        <span class="navbar-brand mb-0 h1"><i class="fa-solid fa-scissors me-2"></i>DLARD 4 BARBERSHOP</span>
         <div class="d-flex align-items-center">
             <div class="form-check form-switch me-4">
                 <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" onchange="toggleTheme()">
@@ -122,6 +122,7 @@
         <div class="col-lg-9">
             <div class="tab-content" id="posTabsContent">
 
+                <!-- [DASHBOARD, ANALISIS PRODUK, ANALISIS KARYAWAN TABS - OMITTED FOR BREVITY BUT KEPT IN ACTUAL CODE] -->
                 <div class="tab-pane fade show active" id="dashboard">
                     <div class="card p-4 mb-4">
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
@@ -259,7 +260,7 @@
                             
                             <div class="d-flex align-items-center gap-2">
                                 <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
-                                <select id="filterKaryawanMode" class="form-select form-select-sm" onchange="updateKaryawanFilterUI()">
+                                <select id="filterKaryawanMode" class="form-select form-select-sm" onchange="updatRinoryawanFilterUI()">
                                     <option value="all">Seluruh Waktu</option>
                                     <option value="date">Per Tanggal</option>
                                     <option value="month" selected>Per Bulan</option>
@@ -275,11 +276,15 @@
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <div class="card p-4 border border-primary border-2 shadow-sm h-100 bg-white">
-                                    <h5 class="fw-bold text-primary border-bottom border-primary pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: RINO</h5>
+                                    <h5 class="fw-bold text-primary border-bottom border-primary pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Rino NUR BARIZA</h5>
                                     
                                     <div class="mb-2">
-                                        <label class="form-label small fw-bold text-secondary mb-0">Status</label>
-                                        <p class="mb-2 fw-semibold">Kapster Utama</p>
+                                        <label class="form-label small fw-bold text-secondary mb-0">Umur</label>
+                                        <p class="mb-2 fw-semibold">24 Tahun</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-secondary mb-0">Alamat</label>
+                                        <p class="mb-2 fw-semibold">DUSUN SIMADU TIMUR RT 07 / RW 08 , DESA BANYUMUDAL , PEMALANG</p>
                                     </div>
 
                                     <div class="mb-3 p-3 bg-light border rounded">
@@ -311,11 +316,15 @@
                             
                             <div class="col-md-6">
                                 <div class="card p-4 border border-info border-2 shadow-sm h-100 bg-white">
-                                    <h5 class="fw-bold text-info border-bottom border-info pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: ALFRED</h5>
+                                    <h5 class="fw-bold text-info border-bottom border-info pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Alfred ALWI ATTHOHIR</h5>
                                     
                                     <div class="mb-2">
-                                        <label class="form-label small fw-bold text-secondary mb-0">Status</label>
-                                        <p class="mb-2 fw-semibold">Kapster Utama</p>
+                                        <label class="form-label small fw-bold text-secondary mb-0">Umur</label>
+                                        <p class="mb-2 fw-semibold">20 Tahun</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-secondary mb-0">Alamat</label>
+                                        <p class="mb-2 fw-semibold">PERUM. BLURU PERMAI FP-01, SIDOARJO</p>
                                     </div>
                                     
                                     <div class="mb-3 p-3 bg-light border rounded">
@@ -431,7 +440,7 @@
                         <div class="row g-2 mb-2">
                             <div class="col-7">
                                 <label class="form-label fw-semibold small text-muted">Keterangan</label>
-                                <input type="text" id="ketPengeluaran_1" class="form-control" placeholder="Contoh: Kasbon Rino / Token Listrik">
+                                <input type="text" id="ketPengeluaran_1" class="form-control" placeholder="Contoh: Token Listrik">
                             </div>
                             <div class="col-5">
                                 <label class="form-label fw-semibold small text-muted">Nominal (Rp)</label>
@@ -503,11 +512,11 @@
                 <div class="tab-pane fade" id="laporan">
                     <div class="card p-4">
                         <h4 class="fw-bold mb-3"><i class="fa-solid fa-file-excel text-success me-2"></i> Export & Download Laporan Excel</h4>
-                        <p class="text-muted">Generate & Download rekapitulasi data harian lengkap dengan rincian item, pengeluaran, dan total penghasilan bersih.</p>
+                        <p class="text-muted">Generate & Download rRinopitulasi data harian lengkap dengan rincian item, pengeluaran, dan total penghasilan bersih.</p>
                         <hr class="text-muted">
                         <div class="row g-3 align-items-end">
                             <div class="col-md-5">
-                                <label class="form-label fw-semibold">Bulan Rekap</label>
+                                <label class="form-label fw-semibold">Bulan RRinop</label>
                                 <input type="month" id="excelMonth" class="form-control">
                             </div>
                             <div class="col-md-7">
@@ -533,7 +542,7 @@
     </div>
 </div>
 
-<!-- Modal Konfirmasi Umum -->
+<!-- Modal Konfirmasi Umum (Digunakan untuk akumulasi data yang sama) -->
 <div class="modal fade" id="duplicateConfirmModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -598,7 +607,7 @@
     </div>
 </div>
 
-<!-- Modals Detail & Hapus -->
+<!-- Modals Detail & Hapus (Tetap) -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -637,16 +646,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPmWz4d1tdt7L-9CDaXDIyze9sZjvtkixHejrLytipOjnBZzVuU6dsdfQEq-D2Ur-IWQ/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydD0IS2l0qAhUiiyz5lD-9DgXMIi6C6y0UzvMpoDkmAsSSHZkx8-Ux49E3y1gisrewNA/exec";
 
     const MENU = {
-        "keren-rino": 35000, "ganteng-rino": 40000, "elegan-rino": 45000, "anak-rino": 30000, "ayahanak-rino": 60000, "jenggot-rino": 15000,
-        "keren-alfred": 35000, "ganteng-alfred": 40000, "elegan-alfred": 45000, "anak-alfred": 30000, "ayahanak-alfred": 60000, "jenggot-alfred": 15000
+        "keren-Rino": 50000, "ganteng-Rino": 55000, "elegan-Rino": 60000, "anak-Rino": 45000, "ayahanak-Rino": 80000, "jenggot-Rino": 35000,
+        "keren-Alfred": 50000, "ganteng-Alfred": 55000, "elegan-Alfred": 60000, "anak-Alfred": 45000, "ayahanak-Alfred": 80000, "jenggot-Alfred": 35000
     };
 
     const URUTAN_MENU = [
-        "keren-rino", "ganteng-rino", "elegan-rino", "anak-rino", "ayahanak-rino", "jenggot-rino", 
-        "keren-alfred", "ganteng-alfred", "elegan-alfred", "anak-alfred", "ayahanak-alfred", "jenggot-alfred"
+        "keren-Rino", "ganteng-Rino", "elegan-Rino", "anak-Rino", "ayahanak-Rino", "jenggot-Rino", 
+        "keren-Alfred", "ganteng-Alfred", "elegan-Alfred", "anak-Alfred", "ayahanak-Alfred", "jenggot-Alfred"
     ];
 
     let globalData = { penjualan: [], pemasukan: [], pengeluaran: [], libur: [] };
@@ -729,9 +738,9 @@
                     </div>
                 </div>`;
             
-            if (item.includes('rino')) {
+            if (item.includes('Rino')) {
                 containerRino.appendChild(col);
-            } else if (item.includes('alfred')) {
+            } else if (item.includes('Alfred')) {
                 containerAlfred.appendChild(col);
             }
         });
@@ -972,7 +981,7 @@
     async function sendData(payload) {
         if(isProcessing) return;
         isProcessing = true;
-        showLoading(true, payload.action === 'generate_rekap' ? "Menyusun Excel..." : "Menyimpan & Mengakumulasi Data...");
+        showLoading(true, payload.action === 'generate_rRinop' ? "Menyusun Excel..." : "Menyimpan & Mengakumulasi Data...");
         try {
             const res = await fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -984,7 +993,7 @@
             if(data.status === 'success') {
                 showToast(data.message, "success");
                 
-                if(payload.action === 'generate_rekap' && data.url) {
+                if(payload.action === 'generate_rRinop' && data.url) {
                     window.location.href = data.url; 
                 } else {
                     document.querySelectorAll('input[type="number"]:not(.qty-input), input[type="text"]:not([readonly])').forEach(el => el.value = '');
@@ -1055,285 +1064,8 @@
 
     function downloadExcelReportServer() {
         let val = document.getElementById('excelMonth').value;
-        if(!val) { showToast("Pilih bulan rekap!", "warning"); return; }
-        sendData({ action: "generate_rekap", month: val });
-    }
-
-    function updateDashboardFilterUI() {
-        const mode = document.getElementById('filterMode').value;
-        document.getElementById('inputFilterDate').classList.add('d-none');
-        document.getElementById('inputFilterMonth').classList.add('d-none');
-        document.getElementById('inputFilterYear').classList.add('d-none');
-
-        if(mode === 'date') document.getElementById('inputFilterDate').classList.remove('d-none');
-        if(mode === 'month') document.getElementById('inputFilterMonth').classList.remove('d-none');
-        if(mode === 'year') document.getElementById('inputFilterYear').classList.remove('d-none');
-
-        renderDashboard();
-    }
-
-    function filterDataByPeriod(dataArray, mode, dateVal, monthVal, yearVal) {
-        return dataArray.filter(r => {
-            let tgl = String(r.tanggal || '').split('T')[0];
-            if(mode === 'date') return tgl === dateVal;
-            if(mode === 'month') return tgl.startsWith(monthVal);
-            if(mode === 'year') return tgl.startsWith(yearVal);
-            return true;
-        });
-    }
-
-    function renderDashboard() {
-        const mode = document.getElementById('filterMode').value;
-        const dateVal = document.getElementById('inputFilterDate').value;
-        const monthVal = document.getElementById('inputFilterMonth').value;
-        const yearVal = document.getElementById('inputFilterYear').value;
-
-        const fPenjualan = filterDataByPeriod(globalData.penjualan, mode, dateVal, monthVal, yearVal);
-        const fPemasukan = filterDataByPeriod(globalData.pemasukan, mode, dateVal, monthVal, yearVal);
-        const fPengeluaran = filterDataByPeriod(globalData.pengeluaran, mode, dateVal, monthVal, yearVal);
-
-        let totPenjualan = fPenjualan.reduce((a, b) => a + Number(b.subtotal || 0), 0);
-        let totPemasukan = fPemasukan.reduce((a, b) => a + Number(b.nominal || 0), 0);
-        let totPengeluaran = fPengeluaran.reduce((a, b) => a + Number(b.nominal || 0), 0);
-        let totBersih = (totPenjualan + totPemasukan) - totPengeluaran;
-
-        document.getElementById('statPenjualan').innerText = `Rp ${totPenjualan.toLocaleString('id-ID')}`;
-        document.getElementById('statPemasukan').innerText = `Rp ${totPemasukan.toLocaleString('id-ID')}`;
-        document.getElementById('statPengeluaran').innerText = `Rp ${totPengeluaran.toLocaleString('id-ID')}`;
-        document.getElementById('statBersih').innerText = `Rp ${totBersih.toLocaleString('id-ID')}`;
-
-        // Perhitungan Pertumbuhan Omzet
-        let statValueEl = document.getElementById('statPertumbuhanValue');
-        let statDescEl = document.getElementById('statPertumbuhanDesc');
-        
-        if (mode === 'month' && monthVal) {
-            let [currY, currM] = monthVal.split('-').map(Number);
-            let prevM = currM === 1 ? 12 : currM - 1;
-            let prevY = currM === 1 ? currY - 1 : currY;
-            let prevMonthVal = `${prevY}-${String(prevM).padStart(2, '0')}`;
-
-            let prevPenjualan = filterDataByPeriod(globalData.penjualan, 'month', '', prevMonthVal, '').reduce((a, b) => a + Number(b.subtotal || 0), 0);
-            
-            if (prevPenjualan > 0) {
-                let growth = ((totPenjualan - prevPenjualan) / prevPenjualan) * 100;
-                let isUp = growth >= 0;
-                statValueEl.className = `fw-bold mt-1 mb-0 fs-5 ${isUp ? 'text-success' : 'text-danger'}`;
-                statValueEl.innerHTML = `${isUp ? '↑' : '↓'} ${Math.abs(growth).toFixed(1)}%`;
-                statDescEl.innerText = `vs Bulan Lalu (Rp ${prevPenjualan.toLocaleString('id-ID')})`;
-            } else {
-                statValueEl.className = "fw-bold mt-1 mb-0 fs-5 text-muted";
-                statValueEl.innerText = "N/A";
-                statDescEl.innerText = "Tidak ada data pembanding bulan lalu";
-            }
-        } else {
-            statValueEl.className = "fw-bold mt-1 mb-0 fs-5 text-muted";
-            statValueEl.innerText = "-";
-            statDescEl.innerText = "Pilih Filter Per Bulan";
-        }
-
-        // Render Grafik Chart.js
-        let dateMap = {};
-        fPenjualan.forEach(r => {
-            let tgl = String(r.tanggal || '').split('T')[0];
-            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
-            dateMap[tgl].pen += Number(r.subtotal || 0);
-        });
-        fPemasukan.forEach(r => {
-            let tgl = String(r.tanggal || '').split('T')[0];
-            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
-            dateMap[tgl].pem += Number(r.nominal || 0);
-        });
-        fPengeluaran.forEach(r => {
-            let tgl = String(r.tanggal || '').split('T')[0];
-            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
-            dateMap[tgl].peng += Number(r.nominal || 0);
-        });
-
-        let labels = Object.keys(dateMap).sort();
-        let penData = labels.map(l => dateMap[l].pen);
-        let pemData = labels.map(l => dateMap[l].pem);
-        let pengData = labels.map(l => dateMap[l].peng);
-        let bersihData = labels.map(l => (dateMap[l].pen + dateMap[l].pem) - dateMap[l].peng);
-
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        if (mainChartInstance) mainChartInstance.destroy();
-
-        mainChartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels.length ? labels : ['Tidak Ada Data'],
-                datasets: [
-                    { label: 'Penjualan', data: penData.length ? penData : [0], backgroundColor: '#3b82f6' },
-                    { label: 'Pemasukan Lain', data: pemData.length ? pemData : [0], backgroundColor: '#10b981' },
-                    { label: 'Pengeluaran', data: pengData.length ? pengData : [0], backgroundColor: '#ef4444' },
-                    { label: 'Bersih', data: bersihData.length ? bersihData : [0], type: 'line', borderColor: '#06b6d4', borderWidth: 2, fill: false }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { y: { beginAtZero: true } }
-            }
-        });
-    }
-
-    function updateProductFilterUI() {
-        const mode = document.getElementById('filterProductMode').value;
-        document.getElementById('inputFilterProductDate').classList.add('d-none');
-        document.getElementById('inputFilterProductMonth').classList.add('d-none');
-        document.getElementById('inputFilterProductYear').classList.add('d-none');
-
-        if(mode === 'date') document.getElementById('inputFilterProductDate').classList.remove('d-none');
-        if(mode === 'month') document.getElementById('inputFilterProductMonth').classList.remove('d-none');
-        if(mode === 'year') document.getElementById('inputFilterProductYear').classList.remove('d-none');
-
-        renderProductChart();
-    }
-
-    function renderProductChart() {
-        const mode = document.getElementById('filterProductMode').value;
-        const dateVal = document.getElementById('inputFilterProductDate').value;
-        const monthVal = document.getElementById('inputFilterProductMonth').value;
-        const yearVal = document.getElementById('inputFilterProductYear').value;
-
-        const fPenjualan = filterDataByPeriod(globalData.penjualan, mode, dateVal, monthVal, yearVal);
-
-        let itemQtyMap = {};
-        let itemRevMap = {};
-
-        URUTAN_MENU.forEach(m => {
-            itemQtyMap[m] = 0;
-            itemRevMap[m] = 0;
-        });
-
-        let totalQty = 0;
-        let totalRev = 0;
-
-        fPenjualan.forEach(r => {
-            let item = String(r.item || '').toLowerCase();
-            let qty = Number(r.qty || 0);
-            let sub = Number(r.subtotal || 0);
-
-            itemQtyMap[item] = (itemQtyMap[item] || 0) + qty;
-            itemRevMap[item] = (itemRevMap[item] || 0) + sub;
-            totalQty += qty;
-            totalRev += sub;
-        });
-
-        document.getElementById('statProductQty').innerText = `${totalQty} Item`;
-        document.getElementById('statProductRevenue').innerText = `Rp ${totalRev.toLocaleString('id-ID')}`;
-
-        // Rincian Produk Global
-        let rincianContainer = document.getElementById('rincianProdukGlobal');
-        let rincianHtml = '<div class="d-flex flex-wrap gap-2">';
-        Object.keys(itemQtyMap).forEach(key => {
-            if (itemQtyMap[key] > 0 || URUTAN_MENU.includes(key)) {
-                rincianHtml += `<span class="badge bg-white text-dark border p-2"><strong class="text-capitalize">${key.replace('-', ' ')}:</strong> ${itemQtyMap[key]} item (Rp ${itemRevMap[key].toLocaleString('id-ID')})</span>`;
-            }
-        });
-        rincianHtml += '</div>';
-        rincianContainer.innerHTML = rincianHtml;
-
-        let labels = Object.keys(itemQtyMap).map(k => k.replace('-', ' '));
-        let qtyData = Object.values(itemQtyMap);
-        let revData = Object.values(itemRevMap);
-
-        const ctxQty = document.getElementById('productChart').getContext('2d');
-        if (productChartInstance) productChartInstance.destroy();
-        productChartInstance = new Chart(ctxQty, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{ label: 'Qty Terjual', data: qtyData, backgroundColor: '#06b6d4' }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
-        });
-
-        const ctxRev = document.getElementById('productRevenueChart').getContext('2d');
-        if (productRevenueChartInstance) productRevenueChartInstance.destroy();
-        productRevenueChartInstance = new Chart(ctxRev, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{ label: 'Total Omzet (Rp)', data: revData, backgroundColor: '#3b82f6' }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
-        });
-    }
-
-    function updateKaryawanFilterUI() {
-        const mode = document.getElementById('filterKaryawanMode').value;
-        document.getElementById('inputFilterKaryawanDate').classList.add('d-none');
-        document.getElementById('inputFilterKaryawanMonth').classList.add('d-none');
-        document.getElementById('inputFilterKaryawanYear').classList.add('d-none');
-
-        if(mode === 'date') document.getElementById('inputFilterKaryawanDate').classList.remove('d-none');
-        if(mode === 'month') document.getElementById('inputFilterKaryawanMonth').classList.remove('d-none');
-        if(mode === 'year') document.getElementById('inputFilterKaryawanYear').classList.remove('d-none');
-
-        renderKaryawanDashboard();
-    }
-
-    function renderKaryawanDashboard() {
-        const mode = document.getElementById('filterKaryawanMode').value;
-        const dateVal = document.getElementById('inputFilterKaryawanDate').value;
-        const monthVal = document.getElementById('inputFilterKaryawanMonth').value;
-        const yearVal = document.getElementById('inputFilterKaryawanYear').value;
-
-        const fPenjualan = filterDataByPeriod(globalData.penjualan, mode, dateVal, monthVal, yearVal);
-        const fPengeluaran = filterDataByPeriod(globalData.pengeluaran, mode, dateVal, monthVal, yearVal);
-
-        // Filter RINO
-        let rinoPenjualan = fPenjualan.filter(r => String(r.item || '').toLowerCase().includes('rino'));
-        let totalLayananRino = rinoPenjualan.reduce((a, b) => a + Number(b.subtotal || 0), 0);
-        let kasbonRino = fPengeluaran.filter(r => String(r.keterangan || '').toLowerCase().includes('kasbon rino')).reduce((a, b) => a + Number(b.nominal || 0), 0);
-        let estimasiSubtotalRino = totalLayananRino * 0.40;
-        let gajiRino = estimasiSubtotalRino - kasbonRino;
-
-        // Rincian Layanan Rino
-        let rinoItemMap = {};
-        rinoPenjualan.forEach(r => {
-            let item = String(r.item || '').toLowerCase();
-            rinoItemMap[item] = (rinoItemMap[item] || 0) + Number(r.qty || 0);
-        });
-        let rinoHtml = '<ul class="list-unstyled mb-0 small">';
-        Object.keys(rinoItemMap).forEach(k => {
-            rinoHtml += `<li class="d-flex justify-content-between py-1 border-bottom"><span class="text-capitalize">${k.replace('-', ' ')}</span><span class="fw-bold">${rinoItemMap[k]} item</span></li>`;
-        });
-        if(Object.keys(rinoItemMap).length === 0) rinoHtml += '<li class="text-muted italic">Belum ada transaksi</li>';
-        rinoHtml += '</ul>';
-        document.getElementById('rincianLayananRino').innerHTML = rinoHtml;
-
-        document.getElementById('totalLayananRino').innerText = `Rp ${totalLayananRino.toLocaleString('id-ID')}`;
-        document.getElementById('estimasiSubtotalRino').innerText = `Rp ${estimasiSubtotalRino.toLocaleString('id-ID')}`;
-        document.getElementById('kasbonRino').innerText = `- Rp ${kasbonRino.toLocaleString('id-ID')}`;
-        document.getElementById('gajiRino').innerText = `Rp ${gajiRino.toLocaleString('id-ID')}`;
-
-        // Filter ALFRED
-        let alfredPenjualan = fPenjualan.filter(r => String(r.item || '').toLowerCase().includes('alfred'));
-        let totalLayananAlfred = alfredPenjualan.reduce((a, b) => a + Number(b.subtotal || 0), 0);
-        let kasbonAlfred = fPengeluaran.filter(r => String(r.keterangan || '').toLowerCase().includes('kasbon alfred')).reduce((a, b) => a + Number(b.nominal || 0), 0);
-        let estimasiSubtotalAlfred = totalLayananAlfred * 0.40;
-        let gajiAlfred = estimasiSubtotalAlfred - kasbonAlfred;
-
-        // Rincian Layanan Alfred
-        let alfredItemMap = {};
-        alfredPenjualan.forEach(r => {
-            let item = String(r.item || '').toLowerCase();
-            alfredItemMap[item] = (alfredItemMap[item] || 0) + Number(r.qty || 0);
-        });
-        let alfredHtml = '<ul class="list-unstyled mb-0 small">';
-        Object.keys(alfredItemMap).forEach(k => {
-            alfredHtml += `<li class="d-flex justify-content-between py-1 border-bottom"><span class="text-capitalize">${k.replace('-', ' ')}</span><span class="fw-bold">${alfredItemMap[k]} item</span></li>`;
-        });
-        if(Object.keys(alfredItemMap).length === 0) alfredHtml += '<li class="text-muted italic">Belum ada transaksi</li>';
-        alfredHtml += '</ul>';
-        document.getElementById('rincianLayananAlfred').innerHTML = alfredHtml;
-
-        document.getElementById('totalLayananAlfred').innerText = `Rp ${totalLayananAlfred.toLocaleString('id-ID')}`;
-        document.getElementById('estimasiSubtotalAlfred').innerText = `Rp ${estimasiSubtotalAlfred.toLocaleString('id-ID')}`;
-        document.getElementById('kasbonAlfred').innerText = `- Rp ${kasbonAlfred.toLocaleString('id-ID')}`;
-        document.getElementById('gajiAlfred').innerText = `Rp ${gajiAlfred.toLocaleString('id-ID')}`;
+        if(!val) { showToast("Pilih bulan rRinop!", "warning"); return; }
+        sendData({ action: "generate_rRinop", month: val });
     }
 
     function updateHistoryFilterUI() {
@@ -1355,11 +1087,9 @@
         const ensureDateMap = (tgl) => {
             if (!tgl) return false;
             if (!globalDatesMap[tgl]) {
-                globalDatesMap[tgl] = { 
-                    penjualan: 0, pemasukan: 0, pengeluaran: 0, 
-                    totPenjualan: 0, totPemasukan: 0, totPengeluaran: 0,
-                    isLibur: false, alasanLibur: "" 
-                };
+                globalDatesMap[tgl] = { penjualan: 0, pemasukan: 0, pengeluaran: 0, 
+                                  totPenjualan: 0, totPemasukan: 0, totPengeluaran: 0,
+                                  isLibur: false, alasanLibur: "" };
             }
             return true;
         };
@@ -1398,6 +1128,7 @@
 
         let sortedDates = Object.keys(globalDatesMap).sort((a, b) => b.localeCompare(a));
         
+        // Filter history dates
         let mode = document.getElementById('filterHistoryMode').value;
         let filterMonth = document.getElementById('inputFilterHistoryMonth').value;
         let filterYear = document.getElementById('inputFilterHistoryYear').value;
@@ -1418,116 +1149,572 @@
             let labaBersih = (dataTgl.totPenjualan + dataTgl.totPemasukan) - dataTgl.totPengeluaran;
             let classLaba = labaBersih >= 0 ? 'text-success' : 'text-danger';
 
-            let liburBanner = dataTgl.isLibur ? `<span class="badge bg-danger ms-2"><i class="fa-solid fa-calendar-xmark me-1"></i> Libur: ${dataTgl.alasanLibur}</span>` : '';
+            let liburBanner = '';
+            if(dataTgl.isLibur) {
+                liburBanner = `<div class="bg-danger text-white text-center py-1 fw-bold mb-2 rounded small"><i class="fa-solid fa-calendar-xmark me-1"></i> HARI LIBUR: ${dataTgl.alasanLibur}</div>`;
+            }
 
-            let card = document.createElement('div');
-            card.className = 'card mb-3 p-3 border shadow-sm';
-            card.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                    <div>
-                        <h6 class="fw-bold mb-1"><i class="fa-solid fa-calendar-day me-2 text-primary"></i> Tanggal: ${date} ${liburBanner}</h6>
-                        <small class="text-muted">
-                            Penjualan: <b>${dataTgl.penjualan} baris</b> (Rp ${dataTgl.totPenjualan.toLocaleString('id-ID')}) | 
-                            Pemasukan: <b>${dataTgl.pemasukan} baris</b> (Rp ${dataTgl.totPemasukan.toLocaleString('id-ID')}) | 
-                            Pengeluaran: <b>${dataTgl.pengeluaran} baris</b> (Rp ${dataTgl.totPengeluaran.toLocaleString('id-ID')})
-                        </small>
-                    </div>
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="text-end">
-                            <span class="small text-muted d-block">Laba Bersih</span>
-                            <span class="fw-bold ${classLaba}">Rp ${labaBersih.toLocaleString('id-ID')}</span>
+            let cardHTML = `
+                <div class="card mb-3 border-secondary shadow-sm">
+                    <div class="card-header bg-body-tertiary d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h6 class="mb-0 fw-bold text-body"><i class="fa-solid fa-calendar-day me-2 text-primary"></i> Tanggal: ${date}</h6>
+                        <div>
+                            <button class="btn btn-sm btn-info text-white fw-bold shadow-sm me-2 btn-action" onclick="showHistoryDetail('${date}', ${labaBersih})">
+                                <i class="fa-solid fa-eye me-1"></i> Lihat Detail
+                            </button>
+                            <button class="btn btn-sm btn-danger fw-bold shadow-sm btn-action" onclick="prepareDeleteDate('${date}')">
+                                <i class="fa-solid fa-trash me-1"></i> Hapus
+                            </button>
                         </div>
-                        <button class="btn btn-outline-info btn-sm fw-bold" onclick="showDetailModal('${date}')"><i class="fa-solid fa-eye me-1"></i> Detail</button>
-                        <button class="btn btn-outline-danger btn-sm fw-bold" onclick="confirmDeleteDate('${date}')"><i class="fa-solid fa-trash me-1"></i> Hapus</button>
+                    </div>
+                    <div class="card-body py-2">
+                        ${liburBanner}
+                        <div class="row text-center small fw-semibold">
+                            <div class="col-4 border-end">Penjualan:<br><span class="text-primary fs-6">${dataTgl.penjualan} Item</span></div>
+                            <div class="col-4 border-end">Lain-lain:<br><span class="text-success fs-6">${dataTgl.pemasukan} Data</span></div>
+                            <div class="col-4">Pengeluaran:<br><span class="text-danger fs-6">${dataTgl.pengeluaran} Data</span></div>
+                        </div>
+                        <hr class="my-2 text-muted">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-secondary">Laba Bersih Hari Ini:</span>
+                            <span class="fw-bold fs-6 ${classLaba}">Rp ${labaBersih.toLocaleString('id-ID')}</span>
+                        </div>
                     </div>
                 </div>
             `;
-            historyContainer.appendChild(card);
+            historyContainer.innerHTML += cardHTML;
         });
     }
 
-    function showDetailModal(date) {
-        document.getElementById('detailModalDate').innerText = date;
-        const body = document.getElementById('historyDetailBody');
-        body.innerHTML = '';
+    function showHistoryDetail(dateString, labaBersih) {
+        document.getElementById('detailModalDate').innerText = dateString;
+        
+        let dayPenjualan = globalData.penjualan.filter(r => String(r.tanggal || '').split('T')[0] === dateString);
+        let dayPemasukan = globalData.pemasukan.filter(r => String(r.tanggal || '').split('T')[0] === dateString);
+        let dayPengeluaran = globalData.pengeluaran.filter(r => String(r.tanggal || '').split('T')[0] === dateString);
+        let dayLibur = globalData.libur.find(r => String(r.tanggal || '').split('T')[0] === dateString);
 
-        let pen = globalData.penjualan.filter(r => String(r.tanggal || '').split('T')[0] === date);
-        let pem = globalData.pemasukan.filter(r => String(r.tanggal || '').split('T')[0] === date);
-        let peng = globalData.pengeluaran.filter(r => String(r.tanggal || '').split('T')[0] === date);
-        let lib = globalData.libur.filter(r => String(r.tanggal || '').split('T')[0] === date);
+        let bodyHtml = '';
+        let classLaba = labaBersih >= 0 ? 'text-success' : 'text-danger';
 
-        let html = '';
-
-        if(lib.length > 0) {
-            html += `<div class="alert alert-danger mb-3"><i class="fa-solid fa-circle-exclamation me-2"></i><b>Status Libur:</b> ${lib[0].alasan}</div>`;
+        if (dayLibur) {
+             bodyHtml += `<div class="alert alert-danger fw-bold text-center border-0 py-2"><i class="fa-solid fa-calendar-xmark me-2"></i>TANGGAL INI DISET SEBAGAI HARI LIBUR<br><span class="small fw-normal">Alasan: ${dayLibur.alasan}</span></div>`;
         }
 
-        html += `<h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-cart-shopping me-2"></i> Penjualan</h6>`;
-        if(pen.length > 0) {
-            html += '<table class="table table-sm table-hover border mb-3"><thead><tr><th>Item</th><th>Qty</th><th>Harga</th><th>Subtotal</th></tr></thead><tbody>';
-            pen.forEach(p => {
-                html += `<tr><td class="text-capitalize">${String(p.item).replace('-', ' ')}</td><td>${p.qty}</td><td>Rp ${Number(p.harga||0).toLocaleString('id-ID')}</td><td>Rp ${Number(p.subtotal||0).toLocaleString('id-ID')}</td></tr>`;
+        bodyHtml += `<h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-cash-register me-1"></i> Produk Terjual</h6>`;
+        if(dayPenjualan.length > 0) {
+            bodyHtml += `<div class="table-responsive mb-3"><table class="table table-sm table-bordered bg-white">
+                <thead class="table-light"><tr><th>Item</th><th class="text-center">Qty</th><th class="text-end">Subtotal</th></tr></thead><tbody>`;
+            let totalPenj = 0;
+            dayPenjualan.forEach(p => {
+                let sub = Number(p.subtotal || 0);
+                totalPenj += sub;
+                let itemName = toTitleCase(String(p.item));
+                bodyHtml += `<tr>
+                    <td class="text-capitalize">${itemName}</td>
+                    <td class="text-center">${p.qty}</td>
+                    <td class="text-end">Rp ${sub.toLocaleString('id-ID')}</td>
+                </tr>`;
             });
-            html += '</tbody></table>';
+            bodyHtml += `<tr><th colspan="2" class="text-end">Total Penjualan:</th><th class="text-end text-primary">Rp ${totalPenj.toLocaleString('id-ID')}</th></tr>`;
+            bodyHtml += `</tbody></table></div>`;
         } else {
-            html += '<p class="text-muted small mb-3">Tidak ada catatan penjualan.</p>';
+            bodyHtml += `<p class="text-muted small mb-3 fst-italic">Tidak ada penjualan pada tanggal ini.</p>`;
         }
 
-        html += `<h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-wallet me-2"></i> Pemasukan Lain</h6>`;
-        if(pem.length > 0) {
-            html += '<table class="table table-sm table-hover border mb-3"><thead><tr><th>Keterangan</th><th>Nominal</th></tr></thead><tbody>';
-            pem.forEach(p => {
-                html += `<tr><td>${p.keterangan}</td><td>Rp ${Number(p.nominal||0).toLocaleString('id-ID')}</td></tr>`;
+        bodyHtml += `<h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-wallet me-1"></i> Pemasukan Lain</h6>`;
+        if(dayPemasukan.length > 0) {
+            bodyHtml += `<ul class="list-group mb-3">`;
+            let totalPem = 0;
+            dayPemasukan.forEach(p => {
+                let nom = Number(p.nominal || 0);
+                totalPem += nom;
+                bodyHtml += `<li class="list-group-item d-flex justify-content-between align-items-center p-2 small bg-body-tertiary">
+                    ${p.keterangan} <span class="fw-bold text-success">Rp ${nom.toLocaleString('id-ID')}</span>
+                </li>`;
             });
-            html += '</tbody></table>';
+            bodyHtml += `<li class="list-group-item d-flex justify-content-between align-items-center p-2 bg-body-secondary fw-bold">
+                Total Pemasukan Lain <span class="text-success">Rp ${totalPem.toLocaleString('id-ID')}</span>
+            </li>`;
+            bodyHtml += `</ul>`;
         } else {
-            html += '<p class="text-muted small mb-3">Tidak ada catatan pemasukan lain.</p>';
+            bodyHtml += `<p class="text-muted small mb-3 fst-italic">Tidak ada pemasukan lain pada tanggal ini.</p>`;
         }
 
-        html += `<h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-receipt me-2"></i> Pengeluaran / Kasbon</h6>`;
-        if(peng.length > 0) {
-            html += '<table class="table table-sm table-hover border mb-3"><thead><tr><th>Keterangan</th><th>Nominal</th></tr></thead><tbody>';
-            peng.forEach(p => {
-                html += `<tr><td>${p.keterangan}</td><td>Rp ${Number(p.nominal||0).toLocaleString('id-ID')}</td></tr>`;
+        bodyHtml += `<h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-receipt me-1"></i> Pengeluaran / Kasbon</h6>`;
+        if(dayPengeluaran.length > 0) {
+            bodyHtml += `<ul class="list-group mb-3">`;
+            let totalPeng = 0;
+            dayPengeluaran.forEach(p => {
+                let nom = Number(p.nominal || 0);
+                totalPeng += nom;
+                bodyHtml += `<li class="list-group-item d-flex justify-content-between align-items-center p-2 small bg-body-tertiary">
+                    ${p.keterangan} <span class="fw-bold text-danger">Rp ${nom.toLocaleString('id-ID')}</span>
+                </li>`;
             });
-            html += '</tbody></table>';
+            bodyHtml += `<li class="list-group-item d-flex justify-content-between align-items-center p-2 bg-body-secondary fw-bold">
+                Total Pengeluaran <span class="text-danger">Rp ${totalPeng.toLocaleString('id-ID')}</span>
+            </li>`;
+            bodyHtml += `</ul>`;
         } else {
-            html += '<p class="text-muted small mb-3">Tidak ada catatan pengeluaran.</p>';
+            bodyHtml += `<p class="text-muted small mb-3 fst-italic">Tidak ada pengeluaran pada tanggal ini.</p>`;
         }
 
-        body.innerHTML = html;
-        const modal = new bootstrap.Modal(document.getElementById('historyDetailModal'));
-        modal.show();
+        bodyHtml += `
+            <div class="p-3 bg-body-secondary border rounded shadow-sm d-flex justify-content-between align-items-center mt-4">
+                <h5 class="fw-bold m-0 text-body">Total Laba Bersih :</h5>
+                <h4 class="fw-bold m-0 ${classLaba}">Rp ${labaBersih.toLocaleString('id-ID')}</h4>
+            </div>
+        `;
+
+        document.getElementById('historyDetailBody').innerHTML = bodyHtml;
+        const detailModal = new bootstrap.Modal(document.getElementById('historyDetailModal'));
+        detailModal.show();
     }
 
-    function confirmDeleteDate(date) {
-        targetDateToDelete = date;
-        document.getElementById('deleteConfirmDate').innerText = date;
+    function prepareDeleteDate(dateString) {
+        targetDateToDelete = dateString;
+        document.getElementById('deleteConfirmDate').innerText = dateString;
         
-        let dataTgl = globalDatesMap[date];
-        let summaryHtml = `
-            <ul class="mb-0 ps-3">
-                <li><b>${dataTgl.penjualan}</b> data Penjualan</li>
-                <li><b>${dataTgl.pemasukan}</b> data Pemasukan</li>
-                <li><b>${dataTgl.pengeluaran}</b> data Pengeluaran</li>
-                ${dataTgl.isLibur ? `<li>Status Libur (${dataTgl.alasanLibur})</li>` : ''}
-            </ul>
-        `;
-        document.getElementById('deleteConfirmSummary').innerHTML = summaryHtml;
-
-        const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-        modal.show();
+        let dataTgl = globalDatesMap[dateString];
+        let info = '';
+        
+        if (dataTgl) {
+            let totalOmzet = dataTgl.totPenjualan + dataTgl.totPemasukan;
+            info = `
+                <ul class="mb-0 ps-3">
+                    <li><b>${dataTgl.penjualan}</b> Transaksi Layanan (Rp ${dataTgl.totPenjualan.toLocaleString('id-ID')})</li>
+                    <li><b>${dataTgl.pemasukan}</b> Pemasukan Lain (Rp ${dataTgl.totPemasukan.toLocaleString('id-ID')})</li>
+                    <li><b>${dataTgl.pengeluaran}</b> Pengeluaran (Rp ${dataTgl.totPengeluaran.toLocaleString('id-ID')})</li>
+                </ul>
+                <hr class="my-2">
+                <strong>Omzet akan terhapus: <span class="text-danger">Rp ${totalOmzet.toLocaleString('id-ID')}</span></strong>
+            `;
+            if (dataTgl.isLibur) {
+                info += `<div class="mt-2 text-danger"><i class="fa-solid fa-calendar-xmark"></i> Termasuk label hari libur</div>`;
+            }
+        } else {
+            info = "Tidak ada rincian yang ditemukan untuk tanggal ini.";
+        }
+        
+        document.getElementById('deleteConfirmSummary').innerHTML = info;
+        
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        deleteModal.show();
     }
 
     function executeDeleteDate() {
-        if(!targetDateToDelete) return;
-        const modalEl = document.getElementById('deleteConfirmModal');
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        if(modal) modal.hide();
+        if(targetDateToDelete) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+            modal.hide();
+            sendData({ action: "delete_by_date", tanggal: targetDateToDelete });
+            targetDateToDelete = null; 
+        }
+    }
 
-        sendData({ action: "delete_by_date", tanggal: targetDateToDelete });
+    // DASHBOARD & ANALYTICS RENDER FUNCTIONS (OMITTED FOR BREVITY BUT FULLY INTACT)
+    function updateDashboardFilterUI() {
+        const mode = document.getElementById('filterMode').value;
+        document.getElementById('inputFilterDate').classList.add('d-none');
+        document.getElementById('inputFilterMonth').classList.add('d-none');
+        document.getElementById('inputFilterYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterYear').classList.remove('d-none');
+
+        renderDashboard();
+    }
+    
+    function renderPertumbuhanOmzet(mode, currOmzet, filterDate, filterMonth, filterYear) {
+        const titleEl = document.getElementById('statPertumbuhanValue');
+        const descEl = document.getElementById('statPertumbuhanDesc');
+        
+        if (mode === 'all') {
+            titleEl.innerText = "-";
+            titleEl.className = "fw-bold mt-1 mb-0 fs-5 text-muted";
+            descEl.innerText = "Tidak berlaku untuk Seluruh Waktu";
+            return;
+        }
+
+        let prevOmzet = 0;
+        let prevFilter = '';
+
+        if (mode === 'date') {
+            let d = new Date(filterDate);
+            d.setDate(d.getDate() - 1);
+            prevFilter = d.toISOString().split('T')[0];
+        } else if (mode === 'month') {
+            let d = new Date(filterMonth + "-01");
+            d.setMonth(d.getMonth() - 1);
+            prevFilter = d.toISOString().substring(0, 7);
+        } else if (mode === 'year') {
+            prevFilter = (parseInt(filterYear) - 1).toString();
+        }
+
+        globalData.penjualan.forEach(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if ((mode === 'date' && tgl === prevFilter) || 
+                (mode !== 'date' && tgl.startsWith(prevFilter))) {
+                prevOmzet += Number(row.subtotal || 0);
+            }
+        });
+        globalData.pemasukan.forEach(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if ((mode === 'date' && tgl === prevFilter) || 
+                (mode !== 'date' && tgl.startsWith(prevFilter))) {
+                prevOmzet += Number(row.nominal || 0);
+            }
+        });
+
+        let selisih = currOmzet - prevOmzet;
+        let percentage = 0;
+
+        if (prevOmzet === 0) {
+            percentage = currOmzet > 0 ? 100 : 0;
+        } else {
+            percentage = (selisih / prevOmzet) * 100;
+        }
+
+        let isPlus = selisih >= 0;
+        let signStr = isPlus ? "+" : "";
+        let colorClass = isPlus ? "text-success" : "text-danger";
+        let iconHtml = isPlus ? '<i class="fa-solid fa-arrow-trend-up"></i>' : '<i class="fa-solid fa-arrow-trend-down"></i>';
+        
+        titleEl.innerHTML = `${iconHtml} ${signStr}${percentage.toFixed(1)}%`;
+        titleEl.className = `fw-bold mt-1 mb-0 fs-5 ${colorClass}`;
+        
+        let targetCompareStr = mode === 'date' ? 'Kemarin' : (mode === 'month' ? 'Bulan Lalu' : 'Tahun Lalu');
+        descEl.innerHTML = `(Rp ${Math.abs(selisih).toLocaleString('id-ID')}) vs ${targetCompareStr}`;
+        descEl.className = `small fw-semibold mt-1 ${colorClass}`;
+    }
+
+    function renderDashboard() {
+        const mode = document.getElementById('filterMode').value;
+        const filterDate = document.getElementById('inputFilterDate').value;
+        const filterMonth = document.getElementById('inputFilterMonth').value;
+        const filterYear = document.getElementById('inputFilterYear').value;
+
+        let filteredPenjualan = globalData.penjualan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let filteredPemasukan = globalData.pemasukan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let filteredPengeluaran = globalData.pengeluaran.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let totPenjualan = filteredPenjualan.reduce((sum, r) => sum + Number(r.subtotal || 0), 0);
+        let totPemasukan = filteredPemasukan.reduce((sum, r) => sum + Number(r.nominal || 0), 0);
+        let totPengeluaran = filteredPengeluaran.reduce((sum, r) => sum + Number(r.nominal || 0), 0);
+        let bersih = (totPenjualan + totPemasukan) - totPengeluaran;
+
+        document.getElementById('statPenjualan').innerText = `Rp ${totPenjualan.toLocaleString('id-ID')}`;
+        document.getElementById('statPemasukan').innerText = `Rp ${totPemasukan.toLocaleString('id-ID')}`;
+        document.getElementById('statPengeluaran').innerText = `Rp ${totPengeluaran.toLocaleString('id-ID')}`;
+        document.getElementById('statBersih').innerText = `Rp ${bersih.toLocaleString('id-ID')}`;
+
+        renderPertumbuhanOmzet(mode, totPenjualan + totPemasukan, filterDate, filterMonth, filterYear);
+        renderMainChart(filteredPenjualan, filteredPemasukan, filteredPengeluaran);
+    }
+
+    function renderMainChart(penjualan, pemasukan, pengeluaran) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+        Chart.defaults.color = isDark ? '#adb5bd' : '#666';
+
+        let dateMap = {};
+        
+        penjualan.forEach(r => {
+            let tgl = String(r.tanggal || '').split('T')[0];
+            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
+            dateMap[tgl].pen += Number(r.subtotal || 0);
+        });
+        pemasukan.forEach(r => {
+            let tgl = String(r.tanggal || '').split('T')[0];
+            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
+            dateMap[tgl].pem += Number(r.nominal || 0);
+        });
+        pengeluaran.forEach(r => {
+            let tgl = String(r.tanggal || '').split('T')[0];
+            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
+            dateMap[tgl].peng += Number(r.nominal || 0);
+        });
+
+        let sortedDates = Object.keys(dateMap).sort();
+        let labels = sortedDates.map(d => d);
+        let dataPemasukanTotal = sortedDates.map(d => dateMap[d].pen + dateMap[d].pem);
+        let dataPengeluaran = sortedDates.map(d => dateMap[d].peng);
+        let dataBersih = sortedDates.map(d => (dateMap[d].pen + dateMap[d].pem) - dateMap[d].peng);
+
+        if(mainChartInstance) mainChartInstance.destroy();
+
+        mainChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels.length > 0 ? labels : ['Belum ada data'],
+                datasets: [
+                    {
+                        type: 'line', label: 'Pendapatan Bersih', data: dataBersih.length > 0 ? dataBersih : [0],
+                        borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.15)', borderWidth: 3,
+                        pointBackgroundColor: isDark ? '#1e2329' : '#fff', pointBorderColor: '#10b981', pointBorderWidth: 2, pointRadius: 4, tension: 0.3, fill: true, order: 1
+                    },
+                    {
+                        type: 'bar', label: 'Total Kotor (Penjualan+Lain)', data: dataPemasukanTotal.length > 0 ? dataPemasukanTotal : [0],
+                        backgroundColor: '#3b82f6', borderRadius: 4, order: 2
+                    },
+                    {
+                        type: 'bar', label: 'Total Pengeluaran', data: dataPengeluaran.length > 0 ? dataPengeluaran : [0],
+                        backgroundColor: '#ef4444', borderRadius: 4, order: 3
+                    }
+                ]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                interaction: { mode: 'index', intersect: false }, 
+                plugins: { legend: { position: 'top' } },
+                scales: {
+                    x: { grid: { color: isDark ? '#30363d' : '#e5e7eb' } },
+                    y: { grid: { color: isDark ? '#30363d' : '#e5e7eb' } }
+                }
+            }
+        });
+    }
+
+    function updateProductFilterUI() {
+        const mode = document.getElementById('filterProductMode').value;
+        document.getElementById('inputFilterProductDate').classList.add('d-none');
+        document.getElementById('inputFilterProductMonth').classList.add('d-none');
+        document.getElementById('inputFilterProductYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterProductDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterProductMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterProductYear').classList.remove('d-none');
+
+        renderProductChart();
+    }
+
+    function renderProductChart() {
+        const mode = document.getElementById('filterProductMode').value;
+        const filterDate = document.getElementById('inputFilterProductDate').value;
+        const filterMonth = document.getElementById('inputFilterProductMonth').value;
+        const filterYear = document.getElementById('inputFilterProductYear').value;
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+
+        let filteredPenjualan = globalData.penjualan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        const ctxQty = document.getElementById('productChart').getContext('2d');
+        const ctxRev = document.getElementById('productRevenueChart').getContext('2d');
+        
+        let qtyMap = {};
+        let revMap = {};
+        let totalQtyTerjual = 0;
+        let totalRevenueProduk = 0;
+
+        URUTAN_MENU.forEach(m => {
+            qtyMap[m.toLowerCase()] = 0;
+            revMap[m.toLowerCase()] = 0;
+        });
+
+        filteredPenjualan.forEach(r => {
+            let itemName = String(r.item).toLowerCase();
+            let qty = Number(r.qty || 0);
+            let subtotal = Number(r.subtotal || 0);
+            
+            if(qtyMap[itemName] !== undefined) {
+                qtyMap[itemName] += qty;
+                revMap[itemName] += subtotal;
+            } else {
+                qtyMap[itemName] = qty;
+                revMap[itemName] = subtotal;
+            }
+            
+            totalQtyTerjual += qty;
+            totalRevenueProduk += subtotal;
+        });
+
+        document.getElementById('statProductQty').innerText = `${totalQtyTerjual} Item`;
+        document.getElementById('statProductRevenue').innerText = `Rp ${totalRevenueProduk.toLocaleString('id-ID')}`;
+
+        let rincianGlobalHtml = '<div class="row g-2">';
+        URUTAN_MENU.forEach(m => {
+            let qty = qtyMap[m.toLowerCase()] || 0;
+            let titleName = toTitleCase(m);
+            let colorClass = m.toLowerCase().includes('Rino') ? 'primary' : 'info';
+            let borderColor = isDark ? 'border-secondary' : `border-${colorClass}`;
+            
+            rincianGlobalHtml += `<div class="col-6 col-md-4 col-lg-3">
+                                    <div class="d-flex justify-content-between align-items-center bg-body border ${borderColor} rounded px-2 py-2 shadow-sm">
+                                        <span class="text-secondary small fw-semibold">${titleName}</span>
+                                        <span class="badge bg-${colorClass}">${qty}</span>
+                                    </div>
+                                  </div>`;
+        });
+        rincianGlobalHtml += '</div>';
+        document.getElementById('rincianProdukGlobal').innerHTML = rincianGlobalHtml;
+
+        let labels = URUTAN_MENU.map(m => toTitleCase(m));
+        let dataQty = URUTAN_MENU.map(m => qtyMap[m.toLowerCase()]);
+        let dataRev = URUTAN_MENU.map(m => revMap[m.toLowerCase()]);
+
+        const RinoColor = 'rgba(59, 130, 246, 0.8)';
+        const AlfredColor = 'rgba(6, 182, 212, 0.8)';
+        const bgColors = [
+            RinoColor, RinoColor, RinoColor, RinoColor, RinoColor, RinoColor,
+            AlfredColor, AlfredColor, AlfredColor, AlfredColor, AlfredColor, AlfredColor
+        ];
+
+        let chartOptions = {
+            responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+            scales: { 
+                y: { beginAtZero: true, grid: { color: isDark ? '#30363d' : '#e5e7eb' }, ticks: { stepSize: 1 } }, 
+                x: { grid: { color: isDark ? '#30363d' : '#e5e7eb' }, ticks: { maxRotation: 45, minRotation: 45 } } 
+            }
+        };
+
+        if(productChartInstance) productChartInstance.destroy();
+        productChartInstance = new Chart(ctxQty, {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ label: 'Total Kuantitas Terjual', data: dataQty, backgroundColor: bgColors, borderColor: isDark ? '#1e2329' : '#fff', borderWidth: 1, borderRadius: 4 }] },
+            options: chartOptions
+        });
+
+        if(productRevenueChartInstance) productRevenueChartInstance.destroy();
+        chartOptions.scales.y.ticks = undefined; 
+        productRevenueChartInstance = new Chart(ctxRev, {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ label: 'Total Penjualan (Rp)', data: dataRev, backgroundColor: bgColors, borderColor: isDark ? '#1e2329' : '#fff', borderWidth: 1, borderRadius: 4 }] },
+            options: chartOptions
+        });
+    }
+
+    function updatRinoryawanFilterUI() {
+        const mode = document.getElementById('filterKaryawanMode').value;
+        document.getElementById('inputFilterKaryawanDate').classList.add('d-none');
+        document.getElementById('inputFilterKaryawanMonth').classList.add('d-none');
+        document.getElementById('inputFilterKaryawanYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterKaryawanDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterKaryawanMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterKaryawanYear').classList.remove('d-none');
+
+        renderKaryawanDashboard();
+    }
+
+    function renderKaryawanDashboard() {
+        const mode = document.getElementById('filterKaryawanMode').value;
+        const filterDate = document.getElementById('inputFilterKaryawanDate').value;
+        const filterMonth = document.getElementById('inputFilterKaryawanMonth').value;
+        const filterYear = document.getElementById('inputFilterKaryawanYear').value;
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+
+        let filteredPenjualan = globalData.penjualan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+        
+        let filteredPengeluaran = globalData.pengeluaran.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let totalLayananRino = 0;
+        let totalLayananAlfred = 0;
+        
+        let itemRino = { 'keren-Rino': 0, 'ganteng-Rino': 0, 'elegan-Rino': 0, 'anak-Rino': 0, 'ayahanak-Rino': 0, 'jenggot-Rino': 0 };
+        let itemAlfred = { 'keren-Alfred': 0, 'ganteng-Alfred': 0, 'elegan-Alfred': 0, 'anak-Alfred': 0, 'ayahanak-Alfred': 0, 'jenggot-Alfred': 0 };
+
+        filteredPenjualan.forEach(r => {
+            let itemName = String(r.item).toLowerCase();
+            let subtotal = Number(r.subtotal || 0);
+            let qty = Number(r.qty || 0);
+
+            if (itemName.includes('Rino')) {
+                totalLayananRino += subtotal;
+                if(itemRino[itemName] !== undefined) itemRino[itemName] += qty;
+            } else if (itemName.includes('Alfred')) {
+                totalLayananAlfred += subtotal;
+                if(itemAlfred[itemName] !== undefined) itemAlfred[itemName] += qty;
+            }
+        });
+
+        let kasbonRino = 0;
+        let kasbonAlfred = 0;
+        filteredPengeluaran.forEach(r => {
+            let ket = String(r.keterangan || '').toLowerCase();
+            let nom = Number(r.nominal || 0);
+            
+            if(ket.includes('kasbon Rino')) {
+                kasbonRino += nom;
+            } else if(ket.includes('kasbon Alfred')) {
+                kasbonAlfred += nom;
+            }
+        });
+
+        const buildRincianKaryawan = (itemMap, colorClass) => {
+            let borderCls = isDark ? 'border-secondary' : `border-${colorClass}`;
+            let html = '<div class="row g-2">';
+            Object.keys(itemMap).forEach(k => {
+                let titleName = toTitleCase(k);
+                let qty = itemMap[k];
+                html += `<div class="col-6">
+                            <div class="d-flex justify-content-between align-items-center bg-body border ${borderCls} rounded px-2 py-1 shadow-sm">
+                                <span class="text-secondary small fw-semibold">${titleName}</span>
+                                <span class="badge bg-${colorClass}">${qty}</span>
+                            </div>
+                         </div>`;
+            });
+            html += '</div>';
+            return html;
+        };
+
+        document.getElementById('rincianLayananRino').innerHTML = buildRincianKaryawan(itemRino, 'primary');
+        document.getElementById('rincianLayananAlfred').innerHTML = buildRincianKaryawan(itemAlfred, 'info');
+
+        let estSubtotalRino = totalLayananRino * 0.40;
+        let gajiRino = estSubtotalRino - kasbonRino;
+        
+        let estSubtotalAlfred = totalLayananAlfred * 0.40;
+        let gajiAlfred = estSubtotalAlfred - kasbonAlfred;
+
+        document.getElementById('totalLayananRino').innerText = `Rp ${totalLayananRino.toLocaleString('id-ID')}`;
+        document.getElementById('estimasiSubtotalRino').innerText = `Rp ${estSubtotalRino.toLocaleString('id-ID')}`;
+        document.getElementById('kasbonRino').innerText = `- Rp ${kasbonRino.toLocaleString('id-ID')}`;
+        document.getElementById('gajiRino').innerText = `Rp ${gajiRino.toLocaleString('id-ID')}`;
+
+        document.getElementById('totalLayananAlfred').innerText = `Rp ${totalLayananAlfred.toLocaleString('id-ID')}`;
+        document.getElementById('estimasiSubtotalAlfred').innerText = `Rp ${estSubtotalAlfred.toLocaleString('id-ID')}`;
+        document.getElementById('kasbonAlfred').innerText = `- Rp ${kasbonAlfred.toLocaleString('id-ID')}`;
+        document.getElementById('gajiAlfred').innerText = `Rp ${gajiAlfred.toLocaleString('id-ID')}`;
     }
 </script>
-
 </body>
 </html>
