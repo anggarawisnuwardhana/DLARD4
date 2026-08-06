@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System POS - DLARD 2 Barbershop</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #3b82f6;
+            --bg-body: #f8fafc;
+        }
+        
+        [data-bs-theme="dark"] {
+            --primary-color: #0d1117;
+            --accent-color: #3b82f6;
+            --bg-body: #161b22;
+        }
+
+        body { background-color: var(--bg-body); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.3s, color 0.3s; }
+        
+        .user-select-none {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .navbar { background-color: var(--primary-color) !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; }
+
+        .nav-pills .nav-link {
+            color: #64748b;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+        .nav-pills .nav-link:hover { background-color: var(--bs-secondary-bg); color: var(--bs-body-color); }
+        .nav-pills .nav-link.active { background-color: var(--accent-color); color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+
+        .card { border: none; border-radius: 12px; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); transition: transform 0.2s; background-color: var(--bs-body-bg); }
+        
+        .item-card { 
+            border: 1px solid var(--bs-border-color); 
+            border-radius: 8px; 
+            padding: 10px; 
+            text-align: center; 
+            background: var(--bs-body-bg); 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+        .item-card h6 { font-size: 14px; margin-bottom: 4px !important; }
+        .item-card p { font-size: 12px; margin-bottom: 8px !important; }
+        .item-card:hover { border-color: var(--accent-color); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        
+        .qty-btn { width: 28px; height: 28px; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 6px; }
+        .qty-input { width: 40px; height: 28px; text-align: center; border: 1px solid var(--bs-border-color); border-radius: 6px; margin: 0 6px; font-weight: 600; font-size: 14px; background: var(--bs-body-bg); color: var(--bs-body-color);}
+
+        .stat-card { border-left: 4px solid var(--accent-color); }
+        
+        [data-bs-theme="dark"] .bg-white { background-color: #1e2329 !important; border-color: #30363d !important; }
+        [data-bs-theme="dark"] .bg-light { background-color: #21262d !important; }
+        [data-bs-theme="dark"] .text-dark { color: #f0f6fc !important; }
+        [data-bs-theme="dark"] .text-secondary { color: #8b949e !important; }
+        [data-bs-theme="dark"] .text-muted { color: #8b949e !important; }
+        [data-bs-theme="dark"] #menuContainerRino .border-primary, [data-bs-theme="dark"] #menuContainerAlfred .border-info { border-color: #30363d !important; background-color: #1e2329 !important; }
+
+        #loadingOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(var(--bs-body-bg-rgb), 0.85); z-index: 9999;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loadingOverlay" class="d-none">
+    <div class="spinner-border text-primary mb-2" role="status" style="width: 3rem; height: 3rem;"></div>
+    <h6 class="fw-bold" id="loadingText" style="color: var(--bs-body-color);">Menghubungkan ke Server...</h6>
+</div>
+
+<nav class="navbar navbar-dark sticky-top">
+    <div class="container-fluid px-4">
+        <span class="navbar-brand mb-0 h1"><i class="fa-solid fa-scissors me-2"></i>DLARD 2 BARBERSHOP</span>
+        <div class="d-flex align-items-center">
+            <div class="form-check form-switch me-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" onchange="toggleTheme()">
+                <label class="form-check-label text-light" for="darkModeSwitch"><i class="fa-solid fa-moon"></i> Dark</label>
+            </div>
+            <button class="btn btn-outline-light btn-sm fw-bold btn-action" onclick="fetchAllData()"><i class="fa-solid fa-rotate me-1"></i> Refresh Data</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid px-4 py-4">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="card p-3 sticky-top" style="top: 80px;">
+                <div class="nav flex-column nav-pills" id="posTabs" role="tablist">
+                    <button class="nav-link active text-start" data-bs-toggle="pill" data-bs-target="#dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard & Grafik</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_produk"><i class="fa-solid fa-chart-simple me-2"></i> Analisis Penjualan</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_karyawan"><i class="fa-solid fa-users me-2"></i> Analisis Karyawan</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#penjualan"><i class="fa-solid fa-cash-register me-2"></i> POS / Kasir</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#pemasukan"><i class="fa-solid fa-wallet me-2"></i> Pemasukan Dinamis</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#pengeluaran"><i class="fa-solid fa-receipt me-2"></i> Pengeluaran</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#libur"><i class="fa-solid fa-calendar-xmark me-2"></i> Pencatatan Libur</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#history"><i class="fa-solid fa-clock-rotate-left me-2"></i> History & Manajemen</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#laporan"><i class="fa-solid fa-file-excel me-2"></i> Export Laporan Excel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="tab-content" id="posTabsContent">
+
+                <div class="tab-pane fade show active" id="dashboard">
+                    <div class="card p-4 mb-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                            <h4 class="fw-bold m-0"><i class="fa-solid fa-chart-line text-primary me-2"></i> Dashboard Analitik</h4>
+                            <div class="d-flex align-items-center gap-2">
+                                <label class="fw-semibold text-muted fs-6">Filter:</label>
+                                <select id="filterMode" class="form-select form-select-sm" onchange="updateDashboardFilterUI()">
+                                    <option value="all">Seluruh Waktu</option>
+                                    <option value="date">Per Tanggal</option>
+                                    <option value="month" selected>Per Bulan</option>
+                                    <option value="year">Per Tahun</option>
+                                </select>
+                                <input type="date" id="inputFilterDate" class="form-control form-control-sm d-none" onchange="renderDashboard()">
+                                <input type="month" id="inputFilterMonth" class="form-control form-control-sm" onchange="renderDashboard()">
+                                <select id="inputFilterYear" class="form-select form-select-sm d-none" onchange="renderDashboard()"></select>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col">
+                                <div class="card stat-card p-3 bg-white shadow-sm border-start border-primary border-4 h-100">
+                                    <span class="text-muted small fw-semibold">Total Penjualan</span>
+                                    <h6 class="fw-bold text-primary mt-1 mb-0 fs-5" id="statPenjualan">Rp 0</h6>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card stat-card p-3 bg-white shadow-sm border-start border-success border-4 h-100">
+                                    <span class="text-muted small fw-semibold">Pemasukan Lain</span>
+                                    <h6 class="fw-bold text-success mt-1 mb-0 fs-5" id="statPemasukan">Rp 0</h6>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card stat-card p-3 bg-white shadow-sm border-start border-danger border-4 h-100">
+                                    <span class="text-muted small fw-semibold">Total Pengeluaran</span>
+                                    <h6 class="fw-bold text-danger mt-1 mb-0 fs-5" id="statPengeluaran">Rp 0</h6>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card stat-card p-3 bg-white shadow-sm border-start border-info border-4 h-100">
+                                    <span class="text-muted small fw-semibold">Pendapatan Bersih</span>
+                                    <h6 class="fw-bold text-info mt-1 mb-0 fs-5" id="statBersih">Rp 0</h6>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card stat-card p-3 bg-white shadow-sm border-start border-warning border-4 h-100">
+                                    <span class="text-muted small fw-semibold">Pertumbuhan Omzet</span>
+                                    <h6 class="fw-bold mt-1 mb-0 fs-5" id="statPertumbuhanValue">-</h6>
+                                    <div class="small fw-semibold mt-1" id="statPertumbuhanDesc" style="font-size: 0.7rem;">Pilih Filter Waktu</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card p-3 bg-white border">
+                                    <h6 class="fw-bold text-secondary mb-3"><i class="fa-solid fa-chart-bar me-1"></i> Grafik Pendapatan & Pengeluaran</h6>
+                                    <div style="position: relative; height:320px;">
+                                        <canvas id="mainChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="analisis_produk">
+                    <div class="card p-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+                            <h4 class="fw-bold m-0"><i class="fa-solid fa-chart-simple text-primary me-2"></i> Analisis Penjualan Layanan</h4>
+                            
+                            <div class="d-flex align-items-center gap-2">
+                                <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
+                                <select id="filterProductMode" class="form-select form-select-sm" onchange="updateProductFilterUI()">
+                                    <option value="all">Seluruh Waktu</option>
+                                    <option value="date">Per Tanggal</option>
+                                    <option value="month" selected>Per Bulan</option>
+                                    <option value="year">Per Tahun</option>
+                                </select>
+                                <input type="date" id="inputFilterProductDate" class="form-control form-control-sm d-none" onchange="renderProductChart()">
+                                <input type="month" id="inputFilterProductMonth" class="form-control form-control-sm" onchange="renderProductChart()">
+                                <select id="inputFilterProductYear" class="form-select form-select-sm d-none" onchange="renderProductChart()"></select>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-3">Lihat performa layanan Anda dari segi Kuantitas Terjual maupun Total Pendapatan Rupiah.</p>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="card stat-card p-3 bg-white shadow-sm border-start border-info border-4">
+                                    <span class="text-muted small fw-semibold">Total Item Terjual (Qty)</span>
+                                    <h5 class="fw-bold text-info mt-1 mb-0" id="statProductQty">0 Item</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card stat-card p-3 bg-white shadow-sm border-start border-primary border-4">
+                                    <span class="text-muted small fw-semibold">Total Penjualan Produk (Rp)</span>
+                                    <h5 class="fw-bold text-primary mt-1 mb-0" id="statProductRevenue">Rp 0</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="p-3 bg-light border rounded shadow-sm">
+                                    <span class="text-secondary small fw-bold mb-3 d-block"><i class="fa-solid fa-list me-1"></i> Rincian Jumlah Item Terjual (Global):</span>
+                                    <div id="rincianProdukGlobal"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card p-3 bg-white border shadow-sm">
+                                    <h6 class="fw-bold text-secondary mb-3 text-center">Grafik Kuantitas Terjual</h6>
+                                    <div style="position: relative; height:300px;">
+                                        <canvas id="productChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card p-3 bg-white border shadow-sm">
+                                    <h6 class="fw-bold text-secondary mb-3 text-center">Grafik Total Penjualan (Rp)</h6>
+                                    <div style="position: relative; height:300px;">
+                                        <canvas id="productRevenueChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="analisis_karyawan">
+                    <div class="card p-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+                            <h4 class="fw-bold m-0"><i class="fa-solid fa-users text-primary me-2"></i> Analisis Karyawan</h4>
+                            
+                            <div class="d-flex align-items-center gap-2">
+                                <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
+                                <select id="filterKaryawanMode" class="form-select form-select-sm" onchange="updateKaryawanFilterUI()">
+                                    <option value="all">Seluruh Waktu</option>
+                                    <option value="date">Per Tanggal</option>
+                                    <option value="month" selected>Per Bulan</option>
+                                    <option value="year">Per Tahun</option>
+                                </select>
+                                <input type="date" id="inputFilterKaryawanDate" class="form-control form-control-sm d-none" onchange="renderKaryawanDashboard()">
+                                <input type="month" id="inputFilterKaryawanMonth" class="form-control form-control-sm" onchange="renderKaryawanDashboard()">
+                                <select id="inputFilterKaryawanYear" class="form-select form-select-sm d-none" onchange="renderKaryawanDashboard()"></select>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-4">Dashboard profil karyawan dan kalkulasi estimasi gaji. <br><b>Rumus:</b> (Subtotal Hasil Penjualan x 40%) - Catatan Kasbon.</p>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card p-4 border border-primary border-2 shadow-sm h-100 bg-white">
+                                    <h5 class="fw-bold text-primary border-bottom border-primary pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: RINO</h5>
+                                    
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-bold text-secondary mb-0">Status</label>
+                                        <p class="mb-2 fw-semibold">Kapster Utama</p>
+                                    </div>
+
+                                    <div class="mb-3 p-3 bg-light border rounded">
+                                        <label class="form-label small fw-bold text-primary mb-2"><i class="fa-solid fa-list me-1"></i> Rincian Penjualan Layanan</label>
+                                        <div id="rincianLayananRino"></div>
+                                    </div>
+                                    
+                                    <div class="p-3 bg-white border rounded shadow-sm mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-semibold text-muted small">Subtotal Penjualan (Kotor):</span>
+                                            <span class="fw-bold text-dark" id="totalLayananRino">Rp 0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-semibold text-muted small">Estimasi Subtotal Gaji : <br><span style="font-size: 0.65rem;">(bagi hasil x40%)</span></span>
+                                            <span class="fw-bold text-primary" id="estimasiSubtotalRino">Rp 0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold text-muted small">Total Kasbon (Pengeluaran):</span>
+                                            <span class="fw-bold text-danger" id="kasbonRino">- Rp 0</span>
+                                        </div>
+                                        <hr class="my-2 text-muted">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold text-primary">Estimasi Gaji Bersih:</span>
+                                            <span class="fw-bold text-success fs-5" id="gajiRino">Rp 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card p-4 border border-info border-2 shadow-sm h-100 bg-white">
+                                    <h5 class="fw-bold text-info border-bottom border-info pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: ALFRED</h5>
+                                    
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-bold text-secondary mb-0">Status</label>
+                                        <p class="mb-2 fw-semibold">Kapster Utama</p>
+                                    </div>
+                                    
+                                    <div class="mb-3 p-3 bg-light border rounded">
+                                        <label class="form-label small fw-bold text-info mb-2"><i class="fa-solid fa-list me-1"></i> Rincian Penjualan Layanan</label>
+                                        <div id="rincianLayananAlfred"></div>
+                                    </div>
+
+                                    <div class="p-3 bg-white border rounded shadow-sm mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-semibold text-muted small">Subtotal Penjualan (Kotor):</span>
+                                            <span class="fw-bold text-dark" id="totalLayananAlfred">Rp 0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-semibold text-muted small">Estimasi Subtotal Gaji : <br><span style="font-size: 0.65rem;">(bagi hasil x40%)</span></span>
+                                            <span class="fw-bold text-info" id="estimasiSubtotalAlfred">Rp 0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold text-muted small">Total Kasbon (Pengeluaran):</span>
+                                            <span class="fw-bold text-danger" id="kasbonAlfred">- Rp 0</span>
+                                        </div>
+                                        <hr class="my-2 text-muted">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold text-info">Estimasi Gaji Bersih:</span>
+                                            <span class="fw-bold text-success fs-5" id="gajiAlfred">Rp 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="penjualan">
+                    <div class="card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="fw-bold m-0"><i class="fa-solid fa-cash-register text-primary me-2"></i> Input Penjualan</h4>
+                            <div style="width: 200px;">
+                                <label class="form-label small fw-bold mb-1">Tanggal Transaksi</label>
+                                <input type="date" id="tglPenjualan" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                        <hr class="text-muted mb-3">
+
+                        <div class="user-select-none">
+                            <div class="p-3 border border-primary border-2 rounded mb-3 bg-light" id="menuContainerRinoWrapper">
+                                <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-user me-2"></i> Layanan Rino</h6>
+                                <div class="row g-2" id="menuContainerRino"></div>
+                            </div>
+                            
+                            <div class="p-3 border border-info border-2 rounded mb-3 bg-light" id="menuContainerAlfredWrapper">
+                                <h6 class="fw-bold text-info mb-2"><i class="fa-solid fa-user me-2"></i> Layanan Alfred</h6>
+                                <div class="row g-2" id="menuContainerAlfred"></div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary w-100 py-3 fw-bold shadow-sm fs-6 mt-2 btn-action" onclick="confirmPenjualanModal()">
+                            <i class="fa-solid fa-cart-shopping me-2"></i> PROSES TRANSAKSI
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="pemasukan">
+                    <div class="card p-4">
+                        <h4 class="fw-bold mb-3"><i class="fa-solid fa-wallet text-success me-2"></i> Tambah Pemasukan Lain</h4>
+                        <hr class="text-muted">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tanggal</label>
+                            <input type="date" id="tglPemasukan" class="form-control">
+                        </div>
+                        
+                        <div class="row g-2 mb-2">
+                            <div class="col-7">
+                                <label class="form-label fw-semibold small text-muted">Keterangan</label>
+                                <input type="text" id="ketPemasukan_1" class="form-control" placeholder="Contoh: Pembelian Pomade DLARD 100gr">
+                            </div>
+                            <div class="col-5">
+                                <label class="form-label fw-semibold small text-muted">Nominal (Rp)</label>
+                                <input type="number" id="nomPemasukan_1" class="form-control" placeholder="0" min="1">
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-7">
+                                <input type="text" id="ketPemasukan_2" class="form-control" placeholder="Keterangan 2 (Opsional)">
+                            </div>
+                            <div class="col-5">
+                                <input type="number" id="nomPemasukan_2" class="form-control" placeholder="0" min="1">
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-4">
+                            <div class="col-7">
+                                <input type="text" id="ketPemasukan_3" class="form-control" placeholder="Keterangan 3 (Opsional)">
+                            </div>
+                            <div class="col-5">
+                                <input type="number" id="nomPemasukan_3" class="form-control" placeholder="0" min="1">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success w-100 py-3 fw-bold shadow-sm btn-action" onclick="submitMulti('pemasukan')">
+                            <i class="fa-solid fa-floppy-disk me-2"></i> SIMPAN PEMASUKAN
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="pengeluaran">
+                    <div class="card p-4">
+                        <h4 class="fw-bold mb-3"><i class="fa-solid fa-receipt text-danger me-2"></i> Catat Pengeluaran / Kasbon</h4>
+                        <hr class="text-muted">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tanggal</label>
+                            <input type="date" id="tglPengeluaran" class="form-control">
+                        </div>
+                        
+                        <div class="row g-2 mb-2">
+                            <div class="col-7">
+                                <label class="form-label fw-semibold small text-muted">Keterangan</label>
+                                <input type="text" id="ketPengeluaran_1" class="form-control" placeholder="Contoh: Kasbon Rino / Token Listrik">
+                            </div>
+                            <div class="col-5">
+                                <label class="form-label fw-semibold small text-muted">Nominal (Rp)</label>
+                                <input type="number" id="nomPengeluaran_1" class="form-control" placeholder="0" min="1">
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-7">
+                                <input type="text" id="ketPengeluaran_2" class="form-control" placeholder="Keterangan 2 (Opsional)">
+                            </div>
+                            <div class="col-5">
+                                <input type="number" id="nomPengeluaran_2" class="form-control" placeholder="0" min="1">
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-4">
+                            <div class="col-7">
+                                <input type="text" id="ketPengeluaran_3" class="form-control" placeholder="Keterangan 3 (Opsional)">
+                            </div>
+                            <div class="col-5">
+                                <input type="number" id="nomPengeluaran_3" class="form-control" placeholder="0" min="1">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger w-100 py-3 fw-bold shadow-sm btn-action" onclick="submitMulti('pengeluaran')">
+                            <i class="fa-solid fa-floppy-disk me-2"></i> SIMPAN PENGELUARAN
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="libur">
+                    <div class="card p-4">
+                        <h4 class="fw-bold mb-3"><i class="fa-solid fa-calendar-xmark text-secondary me-2"></i> Catat Libur</h4>
+                        <hr class="text-muted">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tanggal Libur</label>
+                            <input type="date" id="tglLibur" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Keterangan Libur</label>
+                            <input type="text" id="alasanLibur" class="form-control" placeholder="Contoh: Keperluan keluarga / Hari Raya">
+                        </div>
+                        <button class="btn btn-secondary w-100 py-3 fw-bold shadow-sm btn-action" onclick="submitLibur()">
+                            <i class="fa-solid fa-floppy-disk me-2"></i> SIMPAN CATATAN HARI LIBUR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="history">
+                    <div class="card p-4">
+                        <h4 class="fw-bold mb-3"><i class="fa-solid fa-clock-rotate-left text-warning me-2"></i> History & Manajemen Data</h4>
+                        <p class="text-muted small">Kelola riwayat input data (Penjualan, Pemasukan, Pengeluaran, Libur) per tanggal. Klik <b>Lihat Detail</b> untuk rincian, atau Hapus untuk mereset seluruh transaksi pada tanggal tersebut.</p>
+                        
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
+                            <select id="filterHistoryMode" class="form-select form-select-sm w-auto" onchange="updateHistoryFilterUI()">
+                                <option value="all">Seluruh Waktu</option>
+                                <option value="month" selected>Per Bulan</option>
+                                <option value="year">Per Tahun</option>
+                            </select>
+                            <input type="month" id="inputFilterHistoryMonth" class="form-control form-control-sm w-auto" onchange="renderHistory()">
+                            <select id="inputFilterHistoryYear" class="form-select form-select-sm w-auto d-none" onchange="renderHistory()"></select>
+                        </div>
+                        
+                        <hr class="text-muted mb-4">
+                        <div id="historyContainer"></div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="laporan">
+                    <div class="card p-4">
+                        <h4 class="fw-bold mb-3"><i class="fa-solid fa-file-excel text-success me-2"></i> Export & Download Laporan Excel</h4>
+                        <p class="text-muted">Generate & Download rekapitulasi data harian lengkap dengan rincian item, pengeluaran, dan total penghasilan bersih.</p>
+                        <hr class="text-muted">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold">Bulan Rekap</label>
+                                <input type="month" id="excelMonth" class="form-control">
+                            </div>
+                            <div class="col-md-7">
+                                <button class="btn btn-success w-100 py-2 fw-bold shadow-sm btn-action" onclick="downloadExcelReportServer()">
+                                    <i class="fa-solid fa-file-arrow-down me-2"></i> GENERATE & DOWNLOAD EXCEL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div id="liveToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fw-semibold" id="toastMessage">Pesan Notifikasi</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Umum -->
+<div class="modal fade" id="duplicateConfirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i> Konfirmasi Data Ganda / Akumulasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2" id="duplicateConfirmText">Terdapat data pada tanggal yang sama. Apakah Anda ingin mengakumulasikannya?</p>
+                <h6 class="fw-bold text-secondary small">Data Sudah Terinput:</h6>
+                <div class="p-2 bg-light border rounded text-sm mb-2" id="duplicateOldData" style="max-height: 150px; overflow-y: auto;"></div>
+                <h6 class="fw-bold text-primary small">Data Akan Diinput:</h6>
+                <div class="p-2 bg-white border border-primary rounded text-sm mb-3" id="duplicateNewData" style="max-height: 150px; overflow-y: auto;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-warning px-4 fw-bold text-dark btn-action" id="duplicateConfirmBtn">Ya, Lanjutkan Input</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Checkout Biru untuk Penjualan -->
+<div class="modal fade" id="checkoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-cart-shopping me-2"></i> Konfirmasi Pesanan</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-2">Item layanan yang akan disimpan:</p>
+                <div id="checkoutSummaryList" class="border rounded p-3 bg-light mb-3" style="max-height: 200px; overflow-y: auto;"></div>
+                <h5 class="fw-bold text-end text-primary" id="checkoutTotalModal">Total: Rp 0</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary px-4 fw-bold btn-action" id="checkoutSubmitBtn">Ya, Simpan Transaksi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Checkout Dinamis untuk Pemasukan / Pengeluaran -->
+<div class="modal fade" id="checkoutMultiModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white" id="checkoutMultiHeader">
+                <h5 class="modal-title fw-bold" id="checkoutMultiTitleText"><i class="fa-solid fa-file-invoice me-2"></i> Konfirmasi Data</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-2">Item yang akan disimpan:</p>
+                <div id="checkoutMultiList" class="border rounded p-3 bg-light mb-3" style="max-height: 200px; overflow-y: auto;"></div>
+                <h5 class="fw-bold text-end text-primary" id="checkoutMultiTotal">Total: Rp 0</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn px-4 fw-bold btn-action" id="checkoutMultiSubmitBtn">Ya, Simpan Transaksi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals Detail & Hapus -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i> Konfirmasi Penghapusan</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3">Anda yakin ingin <b>menghapus permanen</b> seluruh data transaksi pada tanggal <b id="deleteConfirmDate" class="text-danger"></b>?</p>
+                <div class="p-3 bg-light border rounded text-sm mb-3" id="deleteConfirmSummary"></div>
+                <p class="text-muted small mb-0"><i class="fa-solid fa-info-circle me-1"></i> Tindakan ini tidak dapat dibatalkan dan data akan hilang dari sistem.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger px-4 fw-bold btn-action" onclick="executeDeleteDate()">Ya, Hapus Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="historyDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-circle-info me-2"></i> Rincian Tanggal: <span id="detailModalDate"></span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body bg-body" id="historyDetailBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPmWz4d1tdt7L-9CDaXDIyze9sZjvtkixHejrLytipOjnBZzVuU6dsdfQEq-D2Ur-IWQ/exec";
+
+    const MENU = {
+        "keren-rino": 35000, "ganteng-rino": 40000, "elegan-rino": 45000, "anak-rino": 30000, "ayahanak-rino": 60000, "jenggot-rino": 15000,
+        "keren-alfred": 35000, "ganteng-alfred": 40000, "elegan-alfred": 45000, "anak-alfred": 30000, "ayahanak-alfred": 60000, "jenggot-alfred": 15000
+    };
+
+    const URUTAN_MENU = [
+        "keren-rino", "ganteng-rino", "elegan-rino", "anak-rino", "ayahanak-rino", "jenggot-rino", 
+        "keren-alfred", "ganteng-alfred", "elegan-alfred", "anak-alfred", "ayahanak-alfred", "jenggot-alfred"
+    ];
+
+    let globalData = { penjualan: [], pemasukan: [], pengeluaran: [], libur: [] };
+    let globalDatesMap = {}; 
+    let mainChartInstance = null;
+    let productChartInstance = null;
+    let productRevenueChartInstance = null;
+    let isProcessing = false; 
+    let targetDateToDelete = null; 
+
+    function toggleTheme() {
+        const isDark = document.getElementById('darkModeSwitch').checked;
+        document.documentElement.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+        if (globalData.penjualan.length > 0 || globalData.pemasukan.length > 0 || globalData.pengeluaran.length > 0) {
+            renderDashboard();
+            renderProductChart();
+        }
+    }
+
+    function toTitleCase(str) {
+        return str.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const today = new Date().toISOString().split('T')[0];
+        
+        document.querySelectorAll('input[type="date"]').forEach(el => el.value = today);
+        document.getElementById('excelMonth').value = today.slice(0, 7);
+        document.getElementById('inputFilterMonth').value = today.slice(0, 7); 
+        document.getElementById('inputFilterProductMonth').value = today.slice(0, 7); 
+        document.getElementById('inputFilterKaryawanMonth').value = today.slice(0, 7); 
+        document.getElementById('inputFilterHistoryMonth').value = today.slice(0, 7); 
+
+        initMenuCards();
+        populateYearDropdowns();
+        fetchAllData();
+    });
+
+    function showLoading(show, text = "Memproses...") {
+        const overlay = document.getElementById('loadingOverlay');
+        document.getElementById('loadingText').innerText = text;
+        const actionBtns = document.querySelectorAll('.btn-action');
+        
+        if(show) {
+            overlay.classList.remove('d-none');
+            actionBtns.forEach(btn => btn.disabled = true);
+        } else {
+            overlay.classList.add('d-none');
+            actionBtns.forEach(btn => btn.disabled = false);
+        }
+    }
+
+    function showToast(msg, type = "success") {
+        const toastEl = document.getElementById('liveToast');
+        const toastBody = document.getElementById('toastMessage');
+        toastBody.innerText = msg;
+        toastEl.className = `toast align-items-center text-white border-0 bg-${type === 'success' ? 'success' : (type === 'warning' ? 'warning' : 'danger')}`;
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }
+
+    function initMenuCards() {
+        const containerRino = document.getElementById('menuContainerRino');
+        const containerAlfred = document.getElementById('menuContainerAlfred');
+        
+        containerRino.innerHTML = '';
+        containerAlfred.innerHTML = '';
+
+        Object.keys(MENU).forEach(item => {
+            const col = document.createElement('div');
+            col.className = 'col-6 col-md-4 col-lg-3'; 
+            col.innerHTML = `
+                <div class="item-card shadow-sm" onclick="incrementQty('${item}')">
+                    <h6 class="text-capitalize fw-bold text-dark">${item.replace('-', ' ')}</h6>
+                    <p class="text-muted fw-semibold">Rp ${MENU[item].toLocaleString('id-ID')}</p>
+                    <div class="d-flex justify-content-center align-items-center" onclick="event.stopPropagation()">
+                        <button class="btn btn-outline-secondary qty-btn" onclick="ubahQty('${item}', -1)">-</button>
+                        <input type="number" id="qty-${item}" class="qty-input" value="0" min="0" readonly>
+                        <button class="btn btn-outline-secondary qty-btn" onclick="ubahQty('${item}', 1)">+</button>
+                    </div>
+                </div>`;
+            
+            if (item.includes('rino')) {
+                containerRino.appendChild(col);
+            } else if (item.includes('alfred')) {
+                containerAlfred.appendChild(col);
+            }
+        });
+    }
+
+    function ubahQty(item, delta) {
+        const input = document.getElementById(`qty-${item}`);
+        input.value = Math.max(0, parseInt(input.value) + delta);
+    }
+
+    function incrementQty(item) {
+        ubahQty(item, 1);
+    }
+
+    function populateYearDropdowns() {
+        const currentYear = new Date().getFullYear();
+        const yearSelects = [
+            document.getElementById('inputFilterYear'), 
+            document.getElementById('inputFilterProductYear'),
+            document.getElementById('inputFilterKaryawanYear'),
+            document.getElementById('inputFilterHistoryYear')
+        ];
+        
+        yearSelects.forEach(selectEl => {
+            if(!selectEl) return;
+            selectEl.innerHTML = '';
+            for(let y = currentYear; y >= currentYear - 3; y--) {
+                let opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y;
+                selectEl.appendChild(opt);
+            }
+        });
+    }
+
+    async function fetchAllData() {
+        if(isProcessing) return;
+        isProcessing = true;
+        showLoading(true, "Mengambil data dari Server...");
+        try {
+            const res = await fetch(SCRIPT_URL);
+            const result = await res.json();
+            if(result.status === "success") {
+                globalData = result.data;
+                renderDashboard();
+                renderProductChart();
+                renderKaryawanDashboard(); 
+                renderHistory();
+                showToast("Data berhasil diperbarui!", "success");
+            } else {
+                showToast("Gagal memuat data: " + result.message, "danger");
+            }
+        } catch(err) {
+            showToast("Koneksi gagal! Periksa jaringan internet.", "danger");
+        }
+        isProcessing = false;
+        showLoading(false);
+    }
+
+    function confirmPenjualanModal() {
+        const tgl = document.getElementById('tglPenjualan').value;
+        if(!tgl) {
+            showToast("Tanggal transaksi wajib diisi!", "warning");
+            return;
+        }
+
+        let itemsArray = [];
+        let totalModal = 0;
+
+        Object.keys(MENU).forEach(item => {
+            const qty = parseInt(document.getElementById(`qty-${item}`).value) || 0;
+            if (qty > 0) {
+                let sub = qty * MENU[item];
+                totalModal += sub;
+                itemsArray.push({ nama: item, qty: qty, subtotal: sub });
+            }
+        });
+
+        if (itemsArray.length === 0) {
+            showToast("Belum ada layanan yang dipilih (Qty masih 0).", "warning");
+            return;
+        }
+
+        let listHtml = '<ul class="list-group list-group-flush">';
+        itemsArray.forEach(i => {
+            listHtml += `<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0 py-1">
+                <span class="text-capitalize">${i.nama.replace('-', ' ')} (x${i.qty})</span>
+                <span class="fw-bold">Rp ${i.subtotal.toLocaleString('id-ID')}</span>
+            </li>`;
+        });
+        listHtml += '</ul>';
+
+        document.getElementById('checkoutSummaryList').innerHTML = listHtml;
+        document.getElementById('checkoutTotalModal').innerText = `Total: Rp ${totalModal.toLocaleString('id-ID')}`;
+
+        const submitBtn = document.getElementById('checkoutSubmitBtn');
+        let newBtn = submitBtn.cloneNode(true);
+        submitBtn.parentNode.replaceChild(newBtn, submitBtn);
+        newBtn.addEventListener('click', () => {
+            const modalEl = document.getElementById('checkoutModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if(modal) modal.hide();
+
+            let existingItemsOnDate = globalData.penjualan.filter(r => String(r.tanggal || '').split('T')[0] === tgl);
+            
+            if(existingItemsOnDate.length > 0) {
+                let oldHtml = '<ul class="list-group list-group-flush">';
+                existingItemsOnDate.forEach(ex => {
+                    let itemName = String(ex.item || '').replace('-', ' ');
+                    let sub = Number(ex.subtotal || 0);
+                    oldHtml += `<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0 py-1">
+                        <span class="text-capitalize">${itemName} (x${ex.qty})</span>
+                        <span class="fw-bold">Rp ${sub.toLocaleString('id-ID')}</span>
+                    </li>`;
+                });
+                oldHtml += '</ul>';
+                
+                document.getElementById('duplicateConfirmText').innerHTML = `Terdapat data Penjualan pada tanggal <b>${tgl}</b>. Apakah Anda ingin mengakumulasikannya?`;
+                document.getElementById('duplicateOldData').innerHTML = oldHtml;
+                document.getElementById('duplicateNewData').innerHTML = listHtml;
+                
+                const dupModal = new bootstrap.Modal(document.getElementById('duplicateConfirmModal'));
+                dupModal.show();
+                
+                const dupBtn = document.getElementById('duplicateConfirmBtn');
+                let newDupBtn = dupBtn.cloneNode(true);
+                dupBtn.parentNode.replaceChild(newDupBtn, dupBtn);
+                newDupBtn.addEventListener('click', () => {
+                    dupModal.hide();
+                    executeSubmitPenjualan(tgl, itemsArray);
+                });
+            } else {
+                executeSubmitPenjualan(tgl, itemsArray);
+            }
+        });
+
+        const modal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+        modal.show();
+    }
+
+    function executeSubmitPenjualan(tgl_param, itemsArray_param) {
+        let tgl = tgl_param || document.getElementById('tglPenjualan').value;
+        let itemsArray = itemsArray_param;
+        if (!itemsArray) {
+            itemsArray = [];
+            Object.keys(MENU).forEach(item => {
+                const qty = parseInt(document.getElementById(`qty-${item}`).value) || 0;
+                if (qty > 0) itemsArray.push({ nama: item, qty: qty });
+            });
+        }
+        sendData({ action: "input_penjualan", tanggal: tgl, items: itemsArray });
+    }
+
+    function submitMulti(type) {
+        const tgl = document.getElementById(`tgl${toTitleCase(type)}`).value;
+        if(!tgl) {
+            showToast("Tanggal wajib diisi!", "warning");
+            return;
+        }
+
+        let items = [];
+        let totalModal = 0;
+        for(let i=1; i<=3; i++) {
+            let ket = document.getElementById(`ket${toTitleCase(type)}_${i}`).value.trim();
+            let nom = parseFloat(document.getElementById(`nom${toTitleCase(type)}_${i}`).value) || 0;
+            if(ket && nom > 0) {
+                items.push({ keterangan: ket, nominal: nom });
+                totalModal += nom;
+            }
+        }
+
+        if(items.length === 0) {
+            showToast("Isi minimal satu keterangan dan nominal dengan benar!", "warning");
+            return;
+        }
+
+        let listHtml = '<ul class="list-group list-group-flush">';
+        items.forEach(i => {
+            listHtml += `<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0 py-1">
+                <span>${i.keterangan}</span>
+                <span class="fw-bold">Rp ${i.nominal.toLocaleString('id-ID')}</span>
+            </li>`;
+        });
+        listHtml += '</ul>';
+
+        document.getElementById('checkoutMultiList').innerHTML = listHtml;
+        document.getElementById('checkoutMultiTotal').innerText = `Total: Rp ${totalModal.toLocaleString('id-ID')}`;
+        
+        let headerColor = type === 'pemasukan' ? 'bg-success' : 'bg-danger';
+        let typeText = toTitleCase(type);
+        document.getElementById('checkoutMultiHeader').className = `modal-header text-white ${headerColor}`;
+        document.getElementById('checkoutMultiTitleText').innerHTML = `<i class="fa-solid fa-file-invoice me-2"></i> Konfirmasi Data ${typeText}`;
+        document.getElementById('checkoutMultiSubmitBtn').className = `btn px-4 fw-bold btn-action ${type === 'pemasukan' ? 'btn-success' : 'btn-danger'}`;
+
+        const submitBtn = document.getElementById('checkoutMultiSubmitBtn');
+        let newBtn = submitBtn.cloneNode(true);
+        submitBtn.parentNode.replaceChild(newBtn, submitBtn);
+        newBtn.addEventListener('click', () => {
+            const modalEl = document.getElementById('checkoutMultiModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if(modal) modal.hide();
+
+            let existingDataOnDate = globalData[type].filter(r => String(r.tanggal || '').split('T')[0] === tgl);
+            
+            if(existingDataOnDate.length > 0) {
+                let oldHtml = '<ul class="list-group list-group-flush">';
+                existingDataOnDate.forEach(ex => {
+                    oldHtml += `<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0 py-1">
+                        <span>${ex.keterangan}</span>
+                        <span class="fw-bold">Rp ${Number(ex.nominal || 0).toLocaleString('id-ID')}</span>
+                    </li>`;
+                });
+                oldHtml += '</ul>';
+                
+                document.getElementById('duplicateConfirmText').innerHTML = `Terdapat data ${typeText} pada tanggal <b>${tgl}</b>. Apakah Anda ingin mengakumulasikannya?`;
+                document.getElementById('duplicateOldData').innerHTML = oldHtml;
+                document.getElementById('duplicateNewData').innerHTML = listHtml;
+                
+                const dupModal = new bootstrap.Modal(document.getElementById('duplicateConfirmModal'));
+                dupModal.show();
+                
+                const dupBtn = document.getElementById('duplicateConfirmBtn');
+                let newDupBtn = dupBtn.cloneNode(true);
+                dupBtn.parentNode.replaceChild(newDupBtn, dupBtn);
+                newDupBtn.addEventListener('click', () => {
+                    dupModal.hide();
+                    sendDataMulti(`input_${type}`, tgl, items, type);
+                });
+            } else {
+                sendDataMulti(`input_${type}`, tgl, items, type);
+            }
+        });
+
+        const modal = new bootstrap.Modal(document.getElementById('checkoutMultiModal'));
+        modal.show();
+    }
+
+    async function sendData(payload) {
+        if(isProcessing) return;
+        isProcessing = true;
+        showLoading(true, payload.action === 'generate_rekap' ? "Menyusun Excel..." : "Menyimpan & Mengakumulasi Data...");
+        try {
+            const res = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            
+            if(data.status === 'success') {
+                showToast(data.message, "success");
+                
+                if(payload.action === 'generate_rekap' && data.url) {
+                    window.location.href = data.url; 
+                } else {
+                    document.querySelectorAll('input[type="number"]:not(.qty-input), input[type="text"]:not([readonly])').forEach(el => el.value = '');
+                    Object.keys(MENU).forEach(item => {
+                        const qInput = document.getElementById(`qty-${item}`);
+                        if(qInput) qInput.value = 0;
+                    });
+                    
+                    isProcessing = false; 
+                    fetchAllData(); 
+                    return; 
+                }
+            } else {
+                showToast("Gagal: " + data.message, "danger");
+            }
+        } catch (err) {
+            showToast("Gagal terhubung ke server backend.", "danger");
+        }
+        isProcessing = false;
+        showLoading(false);
+    }
+
+    async function sendDataMulti(action, tgl, items, type) {
+        if(isProcessing) return;
+        isProcessing = true;
+        showLoading(true, `Menyimpan & Mengakumulasi ${items.length} Baris Data...`);
+        
+        let successCount = 0;
+        try {
+            for(let i=0; i<items.length; i++) {
+                let payload = { action: action, tanggal: tgl, keterangan: items[i].keterangan, nominal: items[i].nominal };
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if(data.status === 'success') successCount++;
+            }
+            
+            if(successCount > 0) {
+                showToast(`Berhasil menyimpan & mengakumulasi ${successCount} baris data ${type}!`, "success");
+                for(let i=1; i<=3; i++) {
+                    document.getElementById(`ket${toTitleCase(type)}_${i}`).value = '';
+                    document.getElementById(`nom${toTitleCase(type)}_${i}`).value = '';
+                }
+            }
+        } catch(err) {
+             showToast("Gagal terhubung ke server backend.", "danger");
+        }
+        
+        isProcessing = false;
+        showLoading(false);
+        if(successCount > 0) {
+            fetchAllData(); 
+        }
+    }
+
+    function submitLibur() {
+        const tgl = document.getElementById('tglLibur').value;
+        const alasan = document.getElementById('alasanLibur').value.trim();
+        if(!tgl || !alasan) {
+            showToast("Tanggal dan alasan libur wajib diisi!", "warning");
+            return;
+        }
+        sendData({ action: "input_libur", tanggal: tgl, alasan: alasan });
+    }
+
+    function downloadExcelReportServer() {
+        let val = document.getElementById('excelMonth').value;
+        if(!val) { showToast("Pilih bulan rekap!", "warning"); return; }
+        sendData({ action: "generate_rekap", month: val });
+    }
+
+    function updateDashboardFilterUI() {
+        const mode = document.getElementById('filterMode').value;
+        document.getElementById('inputFilterDate').classList.add('d-none');
+        document.getElementById('inputFilterMonth').classList.add('d-none');
+        document.getElementById('inputFilterYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterYear').classList.remove('d-none');
+
+        renderDashboard();
+    }
+
+    function filterDataByPeriod(dataArray, mode, dateVal, monthVal, yearVal) {
+        return dataArray.filter(r => {
+            let tgl = String(r.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === dateVal;
+            if(mode === 'month') return tgl.startsWith(monthVal);
+            if(mode === 'year') return tgl.startsWith(yearVal);
+            return true;
+        });
+    }
+
+    function renderDashboard() {
+        const mode = document.getElementById('filterMode').value;
+        const dateVal = document.getElementById('inputFilterDate').value;
+        const monthVal = document.getElementById('inputFilterMonth').value;
+        const yearVal = document.getElementById('inputFilterYear').value;
+
+        const fPenjualan = filterDataByPeriod(globalData.penjualan, mode, dateVal, monthVal, yearVal);
+        const fPemasukan = filterDataByPeriod(globalData.pemasukan, mode, dateVal, monthVal, yearVal);
+        const fPengeluaran = filterDataByPeriod(globalData.pengeluaran, mode, dateVal, monthVal, yearVal);
+
+        let totPenjualan = fPenjualan.reduce((a, b) => a + Number(b.subtotal || 0), 0);
+        let totPemasukan = fPemasukan.reduce((a, b) => a + Number(b.nominal || 0), 0);
+        let totPengeluaran = fPengeluaran.reduce((a, b) => a + Number(b.nominal || 0), 0);
+        let totBersih = (totPenjualan + totPemasukan) - totPengeluaran;
+
+        document.getElementById('statPenjualan').innerText = `Rp ${totPenjualan.toLocaleString('id-ID')}`;
+        document.getElementById('statPemasukan').innerText = `Rp ${totPemasukan.toLocaleString('id-ID')}`;
+        document.getElementById('statPengeluaran').innerText = `Rp ${totPengeluaran.toLocaleString('id-ID')}`;
+        document.getElementById('statBersih').innerText = `Rp ${totBersih.toLocaleString('id-ID')}`;
+
+        // Perhitungan Pertumbuhan Omzet
+        let statValueEl = document.getElementById('statPertumbuhanValue');
+        let statDescEl = document.getElementById('statPertumbuhanDesc');
+        
+        if (mode === 'month' && monthVal) {
+            let [currY, currM] = monthVal.split('-').map(Number);
+            let prevM = currM === 1 ? 12 : currM - 1;
+            let prevY = currM === 1 ? currY - 1 : currY;
+            let prevMonthVal = `${prevY}-${String(prevM).padStart(2, '0')}`;
+
+            let prevPenjualan = filterDataByPeriod(globalData.penjualan, 'month', '', prevMonthVal, '').reduce((a, b) => a + Number(b.subtotal || 0), 0);
+            
+            if (prevPenjualan > 0) {
+                let growth = ((totPenjualan - prevPenjualan) / prevPenjualan) * 100;
+                let isUp = growth >= 0;
+                statValueEl.className = `fw-bold mt-1 mb-0 fs-5 ${isUp ? 'text-success' : 'text-danger'}`;
+                statValueEl.innerHTML = `${isUp ? '↑' : '↓'} ${Math.abs(growth).toFixed(1)}%`;
+                statDescEl.innerText = `vs Bulan Lalu (Rp ${prevPenjualan.toLocaleString('id-ID')})`;
+            } else {
+                statValueEl.className = "fw-bold mt-1 mb-0 fs-5 text-muted";
+                statValueEl.innerText = "N/A";
+                statDescEl.innerText = "Tidak ada data pembanding bulan lalu";
+            }
+        } else {
+            statValueEl.className = "fw-bold mt-1 mb-0 fs-5 text-muted";
+            statValueEl.innerText = "-";
+            statDescEl.innerText = "Pilih Filter Per Bulan";
+        }
+
+        // Render Grafik Chart.js
+        let dateMap = {};
+        fPenjualan.forEach(r => {
+            let tgl = String(r.tanggal || '').split('T')[0];
+            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
+            dateMap[tgl].pen += Number(r.subtotal || 0);
+        });
+        fPemasukan.forEach(r => {
+            let tgl = String(r.tanggal || '').split('T')[0];
+            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
+            dateMap[tgl].pem += Number(r.nominal || 0);
+        });
+        fPengeluaran.forEach(r => {
+            let tgl = String(r.tanggal || '').split('T')[0];
+            if(!dateMap[tgl]) dateMap[tgl] = { pen: 0, pem: 0, peng: 0 };
+            dateMap[tgl].peng += Number(r.nominal || 0);
+        });
+
+        let labels = Object.keys(dateMap).sort();
+        let penData = labels.map(l => dateMap[l].pen);
+        let pemData = labels.map(l => dateMap[l].pem);
+        let pengData = labels.map(l => dateMap[l].peng);
+        let bersihData = labels.map(l => (dateMap[l].pen + dateMap[l].pem) - dateMap[l].peng);
+
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if (mainChartInstance) mainChartInstance.destroy();
+
+        mainChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels.length ? labels : ['Tidak Ada Data'],
+                datasets: [
+                    { label: 'Penjualan', data: penData.length ? penData : [0], backgroundColor: '#3b82f6' },
+                    { label: 'Pemasukan Lain', data: pemData.length ? pemData : [0], backgroundColor: '#10b981' },
+                    { label: 'Pengeluaran', data: pengData.length ? pengData : [0], backgroundColor: '#ef4444' },
+                    { label: 'Bersih', data: bersihData.length ? bersihData : [0], type: 'line', borderColor: '#06b6d4', borderWidth: 2, fill: false }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    function updateProductFilterUI() {
+        const mode = document.getElementById('filterProductMode').value;
+        document.getElementById('inputFilterProductDate').classList.add('d-none');
+        document.getElementById('inputFilterProductMonth').classList.add('d-none');
+        document.getElementById('inputFilterProductYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterProductDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterProductMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterProductYear').classList.remove('d-none');
+
+        renderProductChart();
+    }
+
+    function renderProductChart() {
+        const mode = document.getElementById('filterProductMode').value;
+        const dateVal = document.getElementById('inputFilterProductDate').value;
+        const monthVal = document.getElementById('inputFilterProductMonth').value;
+        const yearVal = document.getElementById('inputFilterProductYear').value;
+
+        const fPenjualan = filterDataByPeriod(globalData.penjualan, mode, dateVal, monthVal, yearVal);
+
+        let itemQtyMap = {};
+        let itemRevMap = {};
+
+        URUTAN_MENU.forEach(m => {
+            itemQtyMap[m] = 0;
+            itemRevMap[m] = 0;
+        });
+
+        let totalQty = 0;
+        let totalRev = 0;
+
+        fPenjualan.forEach(r => {
+            let item = String(r.item || '').toLowerCase();
+            let qty = Number(r.qty || 0);
+            let sub = Number(r.subtotal || 0);
+
+            itemQtyMap[item] = (itemQtyMap[item] || 0) + qty;
+            itemRevMap[item] = (itemRevMap[item] || 0) + sub;
+            totalQty += qty;
+            totalRev += sub;
+        });
+
+        document.getElementById('statProductQty').innerText = `${totalQty} Item`;
+        document.getElementById('statProductRevenue').innerText = `Rp ${totalRev.toLocaleString('id-ID')}`;
+
+        // Rincian Produk Global
+        let rincianContainer = document.getElementById('rincianProdukGlobal');
+        let rincianHtml = '<div class="d-flex flex-wrap gap-2">';
+        Object.keys(itemQtyMap).forEach(key => {
+            if (itemQtyMap[key] > 0 || URUTAN_MENU.includes(key)) {
+                rincianHtml += `<span class="badge bg-white text-dark border p-2"><strong class="text-capitalize">${key.replace('-', ' ')}:</strong> ${itemQtyMap[key]} item (Rp ${itemRevMap[key].toLocaleString('id-ID')})</span>`;
+            }
+        });
+        rincianHtml += '</div>';
+        rincianContainer.innerHTML = rincianHtml;
+
+        let labels = Object.keys(itemQtyMap).map(k => k.replace('-', ' '));
+        let qtyData = Object.values(itemQtyMap);
+        let revData = Object.values(itemRevMap);
+
+        const ctxQty = document.getElementById('productChart').getContext('2d');
+        if (productChartInstance) productChartInstance.destroy();
+        productChartInstance = new Chart(ctxQty, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{ label: 'Qty Terjual', data: qtyData, backgroundColor: '#06b6d4' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+        });
+
+        const ctxRev = document.getElementById('productRevenueChart').getContext('2d');
+        if (productRevenueChartInstance) productRevenueChartInstance.destroy();
+        productRevenueChartInstance = new Chart(ctxRev, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{ label: 'Total Omzet (Rp)', data: revData, backgroundColor: '#3b82f6' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+        });
+    }
+
+    function updateKaryawanFilterUI() {
+        const mode = document.getElementById('filterKaryawanMode').value;
+        document.getElementById('inputFilterKaryawanDate').classList.add('d-none');
+        document.getElementById('inputFilterKaryawanMonth').classList.add('d-none');
+        document.getElementById('inputFilterKaryawanYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterKaryawanDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterKaryawanMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterKaryawanYear').classList.remove('d-none');
+
+        renderKaryawanDashboard();
+    }
+
+    function renderKaryawanDashboard() {
+        const mode = document.getElementById('filterKaryawanMode').value;
+        const dateVal = document.getElementById('inputFilterKaryawanDate').value;
+        const monthVal = document.getElementById('inputFilterKaryawanMonth').value;
+        const yearVal = document.getElementById('inputFilterKaryawanYear').value;
+
+        const fPenjualan = filterDataByPeriod(globalData.penjualan, mode, dateVal, monthVal, yearVal);
+        const fPengeluaran = filterDataByPeriod(globalData.pengeluaran, mode, dateVal, monthVal, yearVal);
+
+        // Filter RINO
+        let rinoPenjualan = fPenjualan.filter(r => String(r.item || '').toLowerCase().includes('rino'));
+        let totalLayananRino = rinoPenjualan.reduce((a, b) => a + Number(b.subtotal || 0), 0);
+        let kasbonRino = fPengeluaran.filter(r => String(r.keterangan || '').toLowerCase().includes('kasbon rino')).reduce((a, b) => a + Number(b.nominal || 0), 0);
+        let estimasiSubtotalRino = totalLayananRino * 0.40;
+        let gajiRino = estimasiSubtotalRino - kasbonRino;
+
+        // Rincian Layanan Rino
+        let rinoItemMap = {};
+        rinoPenjualan.forEach(r => {
+            let item = String(r.item || '').toLowerCase();
+            rinoItemMap[item] = (rinoItemMap[item] || 0) + Number(r.qty || 0);
+        });
+        let rinoHtml = '<ul class="list-unstyled mb-0 small">';
+        Object.keys(rinoItemMap).forEach(k => {
+            rinoHtml += `<li class="d-flex justify-content-between py-1 border-bottom"><span class="text-capitalize">${k.replace('-', ' ')}</span><span class="fw-bold">${rinoItemMap[k]} item</span></li>`;
+        });
+        if(Object.keys(rinoItemMap).length === 0) rinoHtml += '<li class="text-muted italic">Belum ada transaksi</li>';
+        rinoHtml += '</ul>';
+        document.getElementById('rincianLayananRino').innerHTML = rinoHtml;
+
+        document.getElementById('totalLayananRino').innerText = `Rp ${totalLayananRino.toLocaleString('id-ID')}`;
+        document.getElementById('estimasiSubtotalRino').innerText = `Rp ${estimasiSubtotalRino.toLocaleString('id-ID')}`;
+        document.getElementById('kasbonRino').innerText = `- Rp ${kasbonRino.toLocaleString('id-ID')}`;
+        document.getElementById('gajiRino').innerText = `Rp ${gajiRino.toLocaleString('id-ID')}`;
+
+        // Filter ALFRED
+        let alfredPenjualan = fPenjualan.filter(r => String(r.item || '').toLowerCase().includes('alfred'));
+        let totalLayananAlfred = alfredPenjualan.reduce((a, b) => a + Number(b.subtotal || 0), 0);
+        let kasbonAlfred = fPengeluaran.filter(r => String(r.keterangan || '').toLowerCase().includes('kasbon alfred')).reduce((a, b) => a + Number(b.nominal || 0), 0);
+        let estimasiSubtotalAlfred = totalLayananAlfred * 0.40;
+        let gajiAlfred = estimasiSubtotalAlfred - kasbonAlfred;
+
+        // Rincian Layanan Alfred
+        let alfredItemMap = {};
+        alfredPenjualan.forEach(r => {
+            let item = String(r.item || '').toLowerCase();
+            alfredItemMap[item] = (alfredItemMap[item] || 0) + Number(r.qty || 0);
+        });
+        let alfredHtml = '<ul class="list-unstyled mb-0 small">';
+        Object.keys(alfredItemMap).forEach(k => {
+            alfredHtml += `<li class="d-flex justify-content-between py-1 border-bottom"><span class="text-capitalize">${k.replace('-', ' ')}</span><span class="fw-bold">${alfredItemMap[k]} item</span></li>`;
+        });
+        if(Object.keys(alfredItemMap).length === 0) alfredHtml += '<li class="text-muted italic">Belum ada transaksi</li>';
+        alfredHtml += '</ul>';
+        document.getElementById('rincianLayananAlfred').innerHTML = alfredHtml;
+
+        document.getElementById('totalLayananAlfred').innerText = `Rp ${totalLayananAlfred.toLocaleString('id-ID')}`;
+        document.getElementById('estimasiSubtotalAlfred').innerText = `Rp ${estimasiSubtotalAlfred.toLocaleString('id-ID')}`;
+        document.getElementById('kasbonAlfred').innerText = `- Rp ${kasbonAlfred.toLocaleString('id-ID')}`;
+        document.getElementById('gajiAlfred').innerText = `Rp ${gajiAlfred.toLocaleString('id-ID')}`;
+    }
+
+    function updateHistoryFilterUI() {
+        const mode = document.getElementById('filterHistoryMode').value;
+        document.getElementById('inputFilterHistoryMonth').classList.add('d-none');
+        document.getElementById('inputFilterHistoryYear').classList.add('d-none');
+
+        if(mode === 'month') document.getElementById('inputFilterHistoryMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterHistoryYear').classList.remove('d-none');
+
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const historyContainer = document.getElementById('historyContainer');
+        historyContainer.innerHTML = '';
+        globalDatesMap = {}; 
+
+        const ensureDateMap = (tgl) => {
+            if (!tgl) return false;
+            if (!globalDatesMap[tgl]) {
+                globalDatesMap[tgl] = { 
+                    penjualan: 0, pemasukan: 0, pengeluaran: 0, 
+                    totPenjualan: 0, totPemasukan: 0, totPengeluaran: 0,
+                    isLibur: false, alasanLibur: "" 
+                };
+            }
+            return true;
+        };
+
+        globalData.penjualan.forEach(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if (ensureDateMap(tgl)) {
+                globalDatesMap[tgl].penjualan++;
+                globalDatesMap[tgl].totPenjualan += Number(row.subtotal || 0);
+            }
+        });
+        
+        globalData.pemasukan.forEach(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if (ensureDateMap(tgl)) {
+                globalDatesMap[tgl].pemasukan++;
+                globalDatesMap[tgl].totPemasukan += Number(row.nominal || 0);
+            }
+        });
+        
+        globalData.pengeluaran.forEach(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if (ensureDateMap(tgl)) {
+                globalDatesMap[tgl].pengeluaran++;
+                globalDatesMap[tgl].totPengeluaran += Number(row.nominal || 0);
+            }
+        });
+        
+        globalData.libur.forEach(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if (ensureDateMap(tgl)) {
+                globalDatesMap[tgl].isLibur = true;
+                globalDatesMap[tgl].alasanLibur = row.alasan || "Libur";
+            }
+        });
+
+        let sortedDates = Object.keys(globalDatesMap).sort((a, b) => b.localeCompare(a));
+        
+        let mode = document.getElementById('filterHistoryMode').value;
+        let filterMonth = document.getElementById('inputFilterHistoryMonth').value;
+        let filterYear = document.getElementById('inputFilterHistoryYear').value;
+
+        let filteredDates = sortedDates.filter(date => {
+            if(mode === 'month') return date.startsWith(filterMonth);
+            if(mode === 'year') return date.startsWith(filterYear);
+            return true;
+        });
+
+        if (filteredDates.length === 0) {
+            historyContainer.innerHTML = '<div class="alert alert-secondary border-0"><i class="fa-solid fa-circle-info me-2"></i>Belum ada data transaksi yang tersimpan.</div>';
+            return;
+        }
+
+        filteredDates.forEach(date => {
+            let dataTgl = globalDatesMap[date];
+            let labaBersih = (dataTgl.totPenjualan + dataTgl.totPemasukan) - dataTgl.totPengeluaran;
+            let classLaba = labaBersih >= 0 ? 'text-success' : 'text-danger';
+
+            let liburBanner = dataTgl.isLibur ? `<span class="badge bg-danger ms-2"><i class="fa-solid fa-calendar-xmark me-1"></i> Libur: ${dataTgl.alasanLibur}</span>` : '';
+
+            let card = document.createElement('div');
+            card.className = 'card mb-3 p-3 border shadow-sm';
+            card.innerHTML = `
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div>
+                        <h6 class="fw-bold mb-1"><i class="fa-solid fa-calendar-day me-2 text-primary"></i> Tanggal: ${date} ${liburBanner}</h6>
+                        <small class="text-muted">
+                            Penjualan: <b>${dataTgl.penjualan} baris</b> (Rp ${dataTgl.totPenjualan.toLocaleString('id-ID')}) | 
+                            Pemasukan: <b>${dataTgl.pemasukan} baris</b> (Rp ${dataTgl.totPemasukan.toLocaleString('id-ID')}) | 
+                            Pengeluaran: <b>${dataTgl.pengeluaran} baris</b> (Rp ${dataTgl.totPengeluaran.toLocaleString('id-ID')})
+                        </small>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="text-end">
+                            <span class="small text-muted d-block">Laba Bersih</span>
+                            <span class="fw-bold ${classLaba}">Rp ${labaBersih.toLocaleString('id-ID')}</span>
+                        </div>
+                        <button class="btn btn-outline-info btn-sm fw-bold" onclick="showDetailModal('${date}')"><i class="fa-solid fa-eye me-1"></i> Detail</button>
+                        <button class="btn btn-outline-danger btn-sm fw-bold" onclick="confirmDeleteDate('${date}')"><i class="fa-solid fa-trash me-1"></i> Hapus</button>
+                    </div>
+                </div>
+            `;
+            historyContainer.appendChild(card);
+        });
+    }
+
+    function showDetailModal(date) {
+        document.getElementById('detailModalDate').innerText = date;
+        const body = document.getElementById('historyDetailBody');
+        body.innerHTML = '';
+
+        let pen = globalData.penjualan.filter(r => String(r.tanggal || '').split('T')[0] === date);
+        let pem = globalData.pemasukan.filter(r => String(r.tanggal || '').split('T')[0] === date);
+        let peng = globalData.pengeluaran.filter(r => String(r.tanggal || '').split('T')[0] === date);
+        let lib = globalData.libur.filter(r => String(r.tanggal || '').split('T')[0] === date);
+
+        let html = '';
+
+        if(lib.length > 0) {
+            html += `<div class="alert alert-danger mb-3"><i class="fa-solid fa-circle-exclamation me-2"></i><b>Status Libur:</b> ${lib[0].alasan}</div>`;
+        }
+
+        html += `<h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-cart-shopping me-2"></i> Penjualan</h6>`;
+        if(pen.length > 0) {
+            html += '<table class="table table-sm table-hover border mb-3"><thead><tr><th>Item</th><th>Qty</th><th>Harga</th><th>Subtotal</th></tr></thead><tbody>';
+            pen.forEach(p => {
+                html += `<tr><td class="text-capitalize">${String(p.item).replace('-', ' ')}</td><td>${p.qty}</td><td>Rp ${Number(p.harga||0).toLocaleString('id-ID')}</td><td>Rp ${Number(p.subtotal||0).toLocaleString('id-ID')}</td></tr>`;
+            });
+            html += '</tbody></table>';
+        } else {
+            html += '<p class="text-muted small mb-3">Tidak ada catatan penjualan.</p>';
+        }
+
+        html += `<h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-wallet me-2"></i> Pemasukan Lain</h6>`;
+        if(pem.length > 0) {
+            html += '<table class="table table-sm table-hover border mb-3"><thead><tr><th>Keterangan</th><th>Nominal</th></tr></thead><tbody>';
+            pem.forEach(p => {
+                html += `<tr><td>${p.keterangan}</td><td>Rp ${Number(p.nominal||0).toLocaleString('id-ID')}</td></tr>`;
+            });
+            html += '</tbody></table>';
+        } else {
+            html += '<p class="text-muted small mb-3">Tidak ada catatan pemasukan lain.</p>';
+        }
+
+        html += `<h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-receipt me-2"></i> Pengeluaran / Kasbon</h6>`;
+        if(peng.length > 0) {
+            html += '<table class="table table-sm table-hover border mb-3"><thead><tr><th>Keterangan</th><th>Nominal</th></tr></thead><tbody>';
+            peng.forEach(p => {
+                html += `<tr><td>${p.keterangan}</td><td>Rp ${Number(p.nominal||0).toLocaleString('id-ID')}</td></tr>`;
+            });
+            html += '</tbody></table>';
+        } else {
+            html += '<p class="text-muted small mb-3">Tidak ada catatan pengeluaran.</p>';
+        }
+
+        body.innerHTML = html;
+        const modal = new bootstrap.Modal(document.getElementById('historyDetailModal'));
+        modal.show();
+    }
+
+    function confirmDeleteDate(date) {
+        targetDateToDelete = date;
+        document.getElementById('deleteConfirmDate').innerText = date;
+        
+        let dataTgl = globalDatesMap[date];
+        let summaryHtml = `
+            <ul class="mb-0 ps-3">
+                <li><b>${dataTgl.penjualan}</b> data Penjualan</li>
+                <li><b>${dataTgl.pemasukan}</b> data Pemasukan</li>
+                <li><b>${dataTgl.pengeluaran}</b> data Pengeluaran</li>
+                ${dataTgl.isLibur ? `<li>Status Libur (${dataTgl.alasanLibur})</li>` : ''}
+            </ul>
+        `;
+        document.getElementById('deleteConfirmSummary').innerHTML = summaryHtml;
+
+        const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        modal.show();
+    }
+
+    function executeDeleteDate() {
+        if(!targetDateToDelete) return;
+        const modalEl = document.getElementById('deleteConfirmModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if(modal) modal.hide();
+
+        sendData({ action: "delete_by_date", tanggal: targetDateToDelete });
+    }
+</script>
+
+</body>
+</html>
