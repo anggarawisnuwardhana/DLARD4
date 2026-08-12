@@ -109,6 +109,7 @@
                     <button class="nav-link active text-start" data-bs-toggle="pill" data-bs-target="#dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard & Grafik</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_produk"><i class="fa-solid fa-chart-simple me-2"></i> Analisis Penjualan</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_karyawan"><i class="fa-solid fa-users me-2"></i> Analisis Karyawan</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_keuangan"><i class="fa-solid fa-money-bill-trend-up me-2"></i> Analisis Keuangan</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#penjualan"><i class="fa-solid fa-cash-register me-2"></i> POS / Kasir</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#pemasukan"><i class="fa-solid fa-wallet me-2"></i> Pemasukan Dinamis</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#pengeluaran"><i class="fa-solid fa-receipt me-2"></i> Pengeluaran</button>
@@ -357,6 +358,96 @@
                     </div>
                 </div>
 
+                <!-- ANALISIS KEUANGAN DIPERBARUI -->
+                <div class="tab-pane fade" id="analisis_keuangan">
+                    <div class="card p-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+                            <h4 class="fw-bold m-0"><i class="fa-solid fa-money-bill-trend-up text-success me-2"></i> Analisis Keuangan</h4>
+                            
+                            <div class="d-flex align-items-center gap-2">
+                                <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
+                                <select id="filterKeuanganMode" class="form-select form-select-sm" onchange="updateKeuanganFilterUI()">
+                                    <option value="all">Seluruh Waktu</option>
+                                    <option value="date">Per Tanggal</option>
+                                    <option value="month" selected>Per Bulan</option>
+                                    <option value="year">Per Tahun</option>
+                                </select>
+                                <input type="date" id="inputFilterKeuanganDate" class="form-control form-control-sm d-none" onchange="renderKeuanganDashboard()">
+                                <input type="month" id="inputFilterKeuanganMonth" class="form-control form-control-sm" onchange="renderKeuanganDashboard()">
+                                <select id="inputFilterKeuanganYear" class="form-select form-select-sm d-none" onchange="renderKeuanganDashboard()"></select>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-4">Ringkasan transaksi keuangan yang dikelompokkan sesuai dengan perputaran dana harian dan bulanan.</p>
+                        
+                        <!-- KELOMPOK 1 -->
+                        <div class="border border-primary border-2 rounded p-3 mb-4 bg-light">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-pie me-2"></i>Ringkasan Utama</h6>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card stat-card p-3 bg-white shadow-sm border-start border-primary border-4 h-100">
+                                        <span class="text-muted small fw-semibold">Subtotal Pemasukan</span>
+                                        <h5 class="fw-bold text-primary mt-1 mb-0" id="keuanganSubtotal">Rp 0</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card stat-card p-3 bg-white shadow-sm border-start border-info border-4 h-100">
+                                        <span class="text-muted small fw-semibold">Pendapatan Tunai</span>
+                                        <h5 class="fw-bold text-info mt-1 mb-0" id="keuanganBersih">Rp 0</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card stat-card p-3 bg-white shadow-sm border-start border-danger border-4 h-100">
+                                        <span class="text-muted small fw-semibold">Total QRIS</span>
+                                        <h5 class="fw-bold text-danger mt-1 mb-0" id="keuanganQrisGroup1">Rp 0</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KELOMPOK 2 -->
+                        <div class="border border-success border-2 rounded p-3 mb-4 bg-light">
+                            <h6 class="fw-bold text-success mb-3"><i class="fa-solid fa-list me-2"></i>Pemasukan Lain-lain</h6>
+                            <div class="card p-3 bg-white shadow-sm border">
+                                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                                    <table class="table table-sm table-hover table-bordered mb-0">
+                                        <thead class="table-light sticky-top">
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Keterangan</th>
+                                                <th class="text-end">Nominal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="keuanganPemasukanLainList">
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KELOMPOK 3 -->
+                        <div class="border border-danger border-2 rounded p-3 bg-light">
+                            <h6 class="fw-bold text-danger mb-3"><i class="fa-solid fa-receipt me-2"></i>Akumulasi Pengeluaran</h6>
+                            <div class="card p-3 bg-white shadow-sm border">
+                                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                                    <table class="table table-sm table-hover table-bordered mb-0">
+                                        <thead class="table-light sticky-top">
+                                            <tr>
+                                                <th>Keterangan (Akumulasi)</th>
+                                                <th class="text-end">Total Nominal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="keuanganPengeluaranList">
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
                 <div class="tab-pane fade" id="penjualan">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -688,7 +779,9 @@
         document.getElementById('inputFilterProductMonth').value = today.slice(0, 7); 
         document.getElementById('inputFilterKaryawanMonth').value = today.slice(0, 7); 
         document.getElementById('inputFilterHistoryMonth').value = today.slice(0, 7); 
+        document.getElementById('inputFilterKeuanganMonth').value = today.slice(0, 7); 
 
+        
         initMenuCards();
         populateYearDropdowns();
         fetchAllData();
@@ -761,7 +854,9 @@
             document.getElementById('inputFilterYear'), 
             document.getElementById('inputFilterProductYear'),
             document.getElementById('inputFilterKaryawanYear'),
-            document.getElementById('inputFilterHistoryYear')
+            document.getElementById('inputFilterHistoryYear'),
+            document.getElementById('inputFilterKeuanganYear')
+
         ];
         
         yearSelects.forEach(selectEl => {
@@ -788,6 +883,7 @@
                 renderDashboard();
                 renderProductChart();
                 renderKaryawanDashboard(); 
+                renderKeuanganDashboard(); 
                 renderHistory();
                 showToast("Data berhasil diperbarui!", "success");
             } else {
@@ -1714,6 +1810,127 @@
         document.getElementById('estimasiSubtotalAlfred').innerText = `Rp ${estSubtotalAlfred.toLocaleString('id-ID')}`;
         document.getElementById('kasbonAlfred').innerText = `- Rp ${kasbonAlfred.toLocaleString('id-ID')}`;
         document.getElementById('gajiAlfred').innerText = `Rp ${gajiAlfred.toLocaleString('id-ID')}`;
+
+            // FUNGSI ANALISIS KEUANGAN DIPERBARUI
+    function updateKeuanganFilterUI() {
+        const mode = document.getElementById('filterKeuanganMode').value;
+        document.getElementById('inputFilterKeuanganDate').classList.add('d-none');
+        document.getElementById('inputFilterKeuanganMonth').classList.add('d-none');
+        document.getElementById('inputFilterKeuanganYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterKeuanganDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterKeuanganMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterKeuanganYear').classList.remove('d-none');
+
+        renderKeuanganDashboard();
+    }
+
+    function renderKeuanganDashboard() {
+        const mode = document.getElementById('filterKeuanganMode').value;
+        const filterDate = document.getElementById('inputFilterKeuanganDate').value;
+        const filterMonth = document.getElementById('inputFilterKeuanganMonth').value;
+        const filterYear = document.getElementById('inputFilterKeuanganYear').value;
+
+        // Filter data berdasarkan mode waktu
+        let filteredPenjualan = globalData.penjualan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let filteredPemasukan = globalData.pemasukan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let filteredPengeluaran = globalData.pengeluaran.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let subtotalPemasukan = 0; 
+        let totalPengeluaran = 0;
+        let qrisGroup1 = 0;
+
+        // Kalkulasi Penjualan (Hanya untuk Subtotal)
+        filteredPenjualan.forEach(r => {
+            let sub = Number(r.subtotal || 0);
+            subtotalPemasukan += sub;
+        });
+
+        // Kalkulasi Pemasukan Lain-lain (Masuk ke Subtotal & Render List)
+        let pemasukanHtml = '';
+        if(filteredPemasukan.length === 0) {
+            pemasukanHtml = '<tr><td colspan="3" class="text-center text-muted fst-italic">Tidak ada data pemasukan lain</td></tr>';
+        }
+
+        filteredPemasukan.forEach(r => {
+            let nom = Number(r.nominal || 0);
+            subtotalPemasukan += nom;
+            
+            pemasukanHtml += `<tr>
+                <td>${String(r.tanggal || '').split('T')[0]}</td>
+                <td>${r.keterangan}</td>
+                <td class="text-end">Rp ${nom.toLocaleString('id-ID')}</td>
+            </tr>`;
+        });
+
+        // Kalkulasi Pengeluaran QRIS dan Akumulasi Seluruh Pengeluaran Grouping per Nama
+        let pengeluaranMap = {};
+        
+        filteredPengeluaran.forEach(r => {
+            let ket = String(r.keterangan || '').trim();
+            let ketLower = ket.toLowerCase();
+            let nom = Number(r.nominal || 0);
+            
+            totalPengeluaran += nom;
+            
+            // Catat khusus qris untuk tampil di Kelompok 1
+            if(ketLower.includes('qris')) {
+                qrisGroup1 += nom;
+            }
+
+            // Simpan data akumulasi berdasarkan nama pengeluaran
+            if(!pengeluaranMap[ketLower]) {
+                pengeluaranMap[ketLower] = { namaOriginal: ket, total: 0 };
+            }
+            pengeluaranMap[ketLower].total += nom;
+        });
+
+        let pendapatanBersih = subtotalPemasukan - totalPengeluaran;
+
+        // Render List Akumulasi Pengeluaran
+        let pengeluaranHtml = '';
+        let pengeluaranKeys = Object.keys(pengeluaranMap);
+        
+        if(pengeluaranKeys.length === 0) {
+            pengeluaranHtml = '<tr><td colspan="2" class="text-center text-muted fst-italic">Tidak ada data pengeluaran</td></tr>';
+        } else {
+            // Sort list agar rapi secara alfabet
+            pengeluaranKeys.sort().forEach(k => {
+                let item = pengeluaranMap[k];
+                pengeluaranHtml += `<tr>
+                    <td class="text-capitalize">${item.namaOriginal}</td>
+                    <td class="text-end text-danger fw-semibold">Rp ${item.total.toLocaleString('id-ID')}</td>
+                </tr>`;
+            });
+        }
+
+        // Update UI HTML
+        document.getElementById('keuanganSubtotal').innerText = `Rp ${subtotalPemasukan.toLocaleString('id-ID')}`;
+        document.getElementById('keuanganBersih').innerText = `Rp ${pendapatanBersih.toLocaleString('id-ID')}`;
+        document.getElementById('keuanganQrisGroup1').innerText = `Rp ${qrisGroup1.toLocaleString('id-ID')}`;
+        
+        document.getElementById('keuanganPemasukanLainList').innerHTML = pemasukanHtml;
+        document.getElementById('keuanganPengeluaranList').innerHTML = pengeluaranHtml;
     }
 </script>
 </body>
