@@ -109,6 +109,7 @@
                     <button class="nav-link active text-start" data-bs-toggle="pill" data-bs-target="#dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard & Grafik</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_produk"><i class="fa-solid fa-chart-simple me-2"></i> Analisis Penjualan</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_karyawan"><i class="fa-solid fa-users me-2"></i> Analisis Karyawan</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#analisis_keuangan"><i class="fa-solid fa-money-bill-trend-up me-2"></i> Analisis Keuangan</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#penjualan"><i class="fa-solid fa-cash-register me-2"></i> POS / Kasir</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#pemasukan"><i class="fa-solid fa-wallet me-2"></i> Pemasukan Dinamis</button>
                     <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#pengeluaran"><i class="fa-solid fa-receipt me-2"></i> Pengeluaran</button>
@@ -122,7 +123,6 @@
         <div class="col-lg-9">
             <div class="tab-content" id="posTabsContent">
 
-                <!-- [DASHBOARD, ANALISIS PRODUK, ANALISIS KARYAWAN TABS - OMITTED FOR BREVITY BUT KEPT IN ACTUAL CODE] -->
                 <div class="tab-pane fade show active" id="dashboard">
                     <div class="card p-4 mb-4">
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
@@ -260,7 +260,7 @@
                             
                             <div class="d-flex align-items-center gap-2">
                                 <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
-                                <select id="filterKaryawanMode" class="form-select form-select-sm" onchange="updatekaryawanFilterUI()">
+                                <select id="filterKaryawanMode" class="form-select form-select-sm" onchange="updateKaryawanFilterUI()">
                                     <option value="all">Seluruh Waktu</option>
                                     <option value="date">Per Tanggal</option>
                                     <option value="month" selected>Per Bulan</option>
@@ -276,15 +276,15 @@
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <div class="card p-4 border border-primary border-2 shadow-sm h-100 bg-white">
-                                    <h5 class="fw-bold text-primary border-bottom border-primary pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Rino</h5>
+                                    <h5 class="fw-bold text-primary border-bottom border-primary pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: RINO</h5>
                                     
                                     <div class="mb-2">
                                         <label class="form-label small fw-bold text-secondary mb-0">Umur</label>
-                                        <p class="mb-2 fw-semibold">20 Tahun</p>
+                                        <p class="mb-2 fw-semibold">-</p>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-secondary mb-0">Alamat</label>
-                                        <p class="mb-2 fw-semibold">BIAK, PAPUA</p>
+                                        <p class="mb-2 fw-semibold">-</p>
                                     </div>
 
                                     <div class="mb-3 p-3 bg-light border rounded">
@@ -316,15 +316,15 @@
                             
                             <div class="col-md-6">
                                 <div class="card p-4 border border-info border-2 shadow-sm h-100 bg-white">
-                                    <h5 class="fw-bold text-info border-bottom border-info pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: Alfred</h5>
+                                    <h5 class="fw-bold text-info border-bottom border-info pb-2 mb-3"><i class="fa-solid fa-user-tie me-2"></i>Profil: ALFRED</h5>
                                     
                                     <div class="mb-2">
                                         <label class="form-label small fw-bold text-secondary mb-0">Umur</label>
-                                        <p class="mb-2 fw-semibold">20 Tahun</p>
+                                        <p class="mb-2 fw-semibold">-</p>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-secondary mb-0">Alamat</label>
-                                        <p class="mb-2 fw-semibold">BIAK, PAPUA</p>
+                                        <p class="mb-2 fw-semibold">-</p>
                                     </div>
                                     
                                     <div class="mb-3 p-3 bg-light border rounded">
@@ -354,6 +354,96 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ANALISIS KEUANGAN -->
+                <div class="tab-pane fade" id="analisis_keuangan">
+                    <div class="card p-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+                            <h4 class="fw-bold m-0"><i class="fa-solid fa-money-bill-trend-up text-success me-2"></i> Analisis Keuangan</h4>
+                            
+                            <div class="d-flex align-items-center gap-2">
+                                <label class="fw-semibold text-muted fs-6">Filter Waktu:</label>
+                                <select id="filterKeuanganMode" class="form-select form-select-sm" onchange="updateKeuanganFilterUI()">
+                                    <option value="all">Seluruh Waktu</option>
+                                    <option value="date">Per Tanggal</option>
+                                    <option value="month" selected>Per Bulan</option>
+                                    <option value="year">Per Tahun</option>
+                                </select>
+                                <input type="date" id="inputFilterKeuanganDate" class="form-control form-control-sm d-none" onchange="renderKeuanganDashboard()">
+                                <input type="month" id="inputFilterKeuanganMonth" class="form-control form-control-sm" onchange="renderKeuanganDashboard()">
+                                <select id="inputFilterKeuanganYear" class="form-select form-select-sm d-none" onchange="renderKeuanganDashboard()"></select>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-4">Ringkasan transaksi keuangan yang dikelompokkan sesuai dengan perputaran dana harian dan bulanan.</p>
+                        
+                        <!-- KELOMPOK 1 -->
+                        <div class="border border-primary border-2 rounded p-3 mb-4 bg-light">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-pie me-2"></i>Ringkasan Utama</h6>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card stat-card p-3 bg-white shadow-sm border-start border-primary border-4 h-100">
+                                        <span class="text-muted small fw-semibold">Subtotal Pemasukan</span>
+                                        <h5 class="fw-bold text-primary mt-1 mb-0" id="keuanganSubtotal">Rp 0</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card stat-card p-3 bg-white shadow-sm border-start border-info border-4 h-100">
+                                        <span class="text-muted small fw-semibold">Pendapatan Tunai</span>
+                                        <h5 class="fw-bold text-info mt-1 mb-0" id="keuanganBersih">Rp 0</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card stat-card p-3 bg-white shadow-sm border-start border-danger border-4 h-100">
+                                        <span class="text-muted small fw-semibold">Total QRIS</span>
+                                        <h5 class="fw-bold text-danger mt-1 mb-0" id="keuanganQrisGroup1">Rp 0</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KELOMPOK 2 -->
+                        <div class="border border-success border-2 rounded p-3 mb-4 bg-light">
+                            <h6 class="fw-bold text-success mb-3"><i class="fa-solid fa-list me-2"></i>Pemasukan Lain-lain</h6>
+                            <div class="card p-3 bg-white shadow-sm border">
+                                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                                    <table class="table table-sm table-hover table-bordered mb-0">
+                                        <thead class="table-light sticky-top">
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Keterangan</th>
+                                                <th class="text-end">Nominal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="keuanganPemasukanLainList">
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KELOMPOK 3 -->
+                        <div class="border border-danger border-2 rounded p-3 bg-light">
+                            <h6 class="fw-bold text-danger mb-3"><i class="fa-solid fa-receipt me-2"></i>Akumulasi Pengeluaran</h6>
+                            <div class="card p-3 bg-white shadow-sm border">
+                                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                                    <table class="table table-sm table-hover table-bordered mb-0">
+                                        <thead class="table-light sticky-top">
+                                            <tr>
+                                                <th>Keterangan (Akumulasi)</th>
+                                                <th class="text-end">Total Nominal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="keuanganPengeluaranList">
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -542,7 +632,7 @@
     </div>
 </div>
 
-<!-- Modal Konfirmasi Umum (Digunakan untuk akumulasi data yang sama) -->
+<!-- Modal Konfirmasi Umum -->
 <div class="modal fade" id="duplicateConfirmModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -607,7 +697,7 @@
     </div>
 </div>
 
-<!-- Modals Detail & Hapus (Tetap) -->
+<!-- Modals Detail & Hapus -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -646,16 +736,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPmWz4d1tdt7L-9CDaXDIyze9sZjvtkixHejrLytipOjnBZzVuU6dsdfQEq-D2Ur-IWQ/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydD0IS2l0qAhUiiyz5lD-9DgXMIi6C6y0UzvMpoDkmAsSSHZkx8-Ux49E3y1gisrewNA/exec";
 
     const MENU = {
-        "keren-Rino": 50000, "ganteng-Rino": 55000, "elegan-Rino": 60000, "anak-Rino": 45000, "ayahanak-Rino": 80000, "jenggot-Rino": 35000,
-        "keren-Alfred": 50000, "ganteng-Alfred": 55000, "elegan-Alfred": 60000, "anak-Alfred": 45000, "ayahanak-Alfred": 80000, "jenggot-Alfred": 35000
+        "keren-rino": 35000, "ganteng-rino": 40000, "elegan-rino": 45000, "anak-rino": 30000, "ayahanak-rino": 60000, "jenggot-rino": 15000,
+        "keren-alfred": 35000, "ganteng-alfred": 40000, "elegan-alfred": 45000, "anak-alfred": 30000, "ayahanak-alfred": 60000, "jenggot-alfred": 15000
     };
 
     const URUTAN_MENU = [
-        "keren-Rino", "ganteng-Rino", "elegan-Rino", "anak-Rino", "ayahanak-Rino", "jenggot-Rino", 
-        "keren-Alfred", "ganteng-Alfred", "elegan-Alfred", "anak-Alfred", "ayahanak-Alfred", "jenggot-Alfred"
+        "keren-rino", "ganteng-rino", "elegan-rino", "anak-rino", "ayahanak-rino", "jenggot-rino", 
+        "keren-alfred", "ganteng-alfred", "elegan-alfred", "anak-alfred", "ayahanak-alfred", "jenggot-alfred"
     ];
 
     let globalData = { penjualan: [], pemasukan: [], pengeluaran: [], libur: [] };
@@ -688,6 +778,7 @@
         document.getElementById('inputFilterProductMonth').value = today.slice(0, 7); 
         document.getElementById('inputFilterKaryawanMonth').value = today.slice(0, 7); 
         document.getElementById('inputFilterHistoryMonth').value = today.slice(0, 7); 
+        document.getElementById('inputFilterKeuanganMonth').value = today.slice(0, 7); 
 
         initMenuCards();
         populateYearDropdowns();
@@ -738,9 +829,9 @@
                     </div>
                 </div>`;
             
-            if (item.includes('Rino')) {
+            if (item.includes('rino')) {
                 containerRino.appendChild(col);
-            } else if (item.includes('Alfred')) {
+            } else if (item.includes('alfred')) {
                 containerAlfred.appendChild(col);
             }
         });
@@ -761,7 +852,8 @@
             document.getElementById('inputFilterYear'), 
             document.getElementById('inputFilterProductYear'),
             document.getElementById('inputFilterKaryawanYear'),
-            document.getElementById('inputFilterHistoryYear')
+            document.getElementById('inputFilterHistoryYear'),
+            document.getElementById('inputFilterKeuanganYear')
         ];
         
         yearSelects.forEach(selectEl => {
@@ -788,6 +880,7 @@
                 renderDashboard();
                 renderProductChart();
                 renderKaryawanDashboard(); 
+                renderKeuanganDashboard(); 
                 renderHistory();
                 showToast("Data berhasil diperbarui!", "success");
             } else {
@@ -1128,7 +1221,6 @@
 
         let sortedDates = Object.keys(globalDatesMap).sort((a, b) => b.localeCompare(a));
         
-        // Filter history dates
         let mode = document.getElementById('filterHistoryMode').value;
         let filterMonth = document.getElementById('inputFilterHistoryMonth').value;
         let filterYear = document.getElementById('inputFilterHistoryYear').value;
@@ -1312,7 +1404,6 @@
         }
     }
 
-    // DASHBOARD & ANALYTICS RENDER FUNCTIONS (OMITTED FOR BREVITY BUT FULLY INTACT)
     function updateDashboardFilterUI() {
         const mode = document.getElementById('filterMode').value;
         document.getElementById('inputFilterDate').classList.add('d-none');
@@ -1567,7 +1658,7 @@
             
             rincianGlobalHtml += `<div class="col-6 col-md-4 col-lg-3">
                                     <div class="d-flex justify-content-between align-items-center bg-body border ${borderColor} rounded px-2 py-2 shadow-sm">
-                                        <span class="text-${colorClass} small fw-bold">${titleName}</span>
+                                        <span class="text-secondary small fw-semibold">${titleName}</span>
                                         <span class="badge bg-${colorClass}">${qty}</span>
                                     </div>
                                   </div>`;
@@ -1579,11 +1670,11 @@
         let dataQty = URUTAN_MENU.map(m => qtyMap[m.toLowerCase()]);
         let dataRev = URUTAN_MENU.map(m => revMap[m.toLowerCase()]);
 
-        const RinoColor = 'rgba(59, 130, 246, 0.8)';
-        const AlfredColor = 'rgba(6, 182, 212, 0.8)';
+        const rinoColor = 'rgba(59, 130, 246, 0.8)';
+        const alfredColor = 'rgba(6, 182, 212, 0.8)';
         const bgColors = [
-            RinoColor, RinoColor, RinoColor, RinoColor, RinoColor, RinoColor,
-            AlfredColor, AlfredColor, AlfredColor, AlfredColor, AlfredColor, AlfredColor
+            rinoColor, rinoColor, rinoColor, rinoColor, rinoColor, rinoColor,
+            alfredColor, alfredColor, alfredColor, alfredColor, alfredColor, alfredColor
         ];
 
         let chartOptions = {
@@ -1610,7 +1701,7 @@
         });
     }
 
-    function updatekaryawanFilterUI() {
+    function updateKaryawanFilterUI() {
         const mode = document.getElementById('filterKaryawanMode').value;
         document.getElementById('inputFilterKaryawanDate').classList.add('d-none');
         document.getElementById('inputFilterKaryawanMonth').classList.add('d-none');
@@ -1714,6 +1805,128 @@
         document.getElementById('estimasiSubtotalAlfred').innerText = `Rp ${estSubtotalAlfred.toLocaleString('id-ID')}`;
         document.getElementById('kasbonAlfred').innerText = `- Rp ${kasbonAlfred.toLocaleString('id-ID')}`;
         document.getElementById('gajiAlfred').innerText = `Rp ${gajiAlfred.toLocaleString('id-ID')}`;
+    }
+
+    // FUNGSI ANALISIS KEUANGAN
+    function updateKeuanganFilterUI() {
+        const mode = document.getElementById('filterKeuanganMode').value;
+        document.getElementById('inputFilterKeuanganDate').classList.add('d-none');
+        document.getElementById('inputFilterKeuanganMonth').classList.add('d-none');
+        document.getElementById('inputFilterKeuanganYear').classList.add('d-none');
+
+        if(mode === 'date') document.getElementById('inputFilterKeuanganDate').classList.remove('d-none');
+        if(mode === 'month') document.getElementById('inputFilterKeuanganMonth').classList.remove('d-none');
+        if(mode === 'year') document.getElementById('inputFilterKeuanganYear').classList.remove('d-none');
+
+        renderKeuanganDashboard();
+    }
+
+    function renderKeuanganDashboard() {
+        const mode = document.getElementById('filterKeuanganMode').value;
+        const filterDate = document.getElementById('inputFilterKeuanganDate').value;
+        const filterMonth = document.getElementById('inputFilterKeuanganMonth').value;
+        const filterYear = document.getElementById('inputFilterKeuanganYear').value;
+
+        // Filter data berdasarkan mode waktu
+        let filteredPenjualan = globalData.penjualan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let filteredPemasukan = globalData.pemasukan.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let filteredPengeluaran = globalData.pengeluaran.filter(row => {
+            let tgl = String(row.tanggal || '').split('T')[0];
+            if(mode === 'date') return tgl === filterDate;
+            if(mode === 'month') return tgl.startsWith(filterMonth);
+            if(mode === 'year') return tgl.startsWith(filterYear);
+            return true;
+        });
+
+        let subtotalPemasukan = 0; 
+        let totalPengeluaran = 0;
+        let qrisGroup1 = 0;
+
+        // Kalkulasi Penjualan (Hanya untuk Subtotal)
+        filteredPenjualan.forEach(r => {
+            let sub = Number(r.subtotal || 0);
+            subtotalPemasukan += sub;
+        });
+
+        // Kalkulasi Pemasukan Lain-lain (Masuk ke Subtotal & Render List)
+        let pemasukanHtml = '';
+        if(filteredPemasukan.length === 0) {
+            pemasukanHtml = '<tr><td colspan="3" class="text-center text-muted fst-italic">Tidak ada data pemasukan lain</td></tr>';
+        }
+
+        filteredPemasukan.forEach(r => {
+            let nom = Number(r.nominal || 0);
+            subtotalPemasukan += nom;
+            
+            pemasukanHtml += `<tr>
+                <td>${String(r.tanggal || '').split('T')[0]}</td>
+                <td>${r.keterangan}</td>
+                <td class="text-end">Rp ${nom.toLocaleString('id-ID')}</td>
+            </tr>`;
+        });
+
+        // Kalkulasi Pengeluaran QRIS dan Akumulasi Seluruh Pengeluaran Grouping per Nama
+        let pengeluaranMap = {};
+        
+        filteredPengeluaran.forEach(r => {
+            let ket = String(r.keterangan || '').trim();
+            let ketLower = ket.toLowerCase();
+            let nom = Number(r.nominal || 0);
+            
+            totalPengeluaran += nom;
+            
+            // Catat khusus qris untuk tampil di Kelompok 1
+            if(ketLower.includes('qris')) {
+                qrisGroup1 += nom;
+            }
+
+            // Simpan data akumulasi berdasarkan nama pengeluaran
+            if(!pengeluaranMap[ketLower]) {
+                pengeluaranMap[ketLower] = { namaOriginal: ket, total: 0 };
+            }
+            pengeluaranMap[ketLower].total += nom;
+        });
+
+        let pendapatanBersih = subtotalPemasukan - totalPengeluaran;
+
+        // Render List Akumulasi Pengeluaran
+        let pengeluaranHtml = '';
+        let pengeluaranKeys = Object.keys(pengeluaranMap);
+        
+        if(pengeluaranKeys.length === 0) {
+            pengeluaranHtml = '<tr><td colspan="2" class="text-center text-muted fst-italic">Tidak ada data pengeluaran</td></tr>';
+        } else {
+            // Sort list agar rapi secara alfabet
+            pengeluaranKeys.sort().forEach(k => {
+                let item = pengeluaranMap[k];
+                pengeluaranHtml += `<tr>
+                    <td class="text-capitalize">${item.namaOriginal}</td>
+                    <td class="text-end text-danger fw-semibold">Rp ${item.total.toLocaleString('id-ID')}</td>
+                </tr>`;
+            });
+        }
+
+        // Update UI HTML
+        document.getElementById('keuanganSubtotal').innerText = `Rp ${subtotalPemasukan.toLocaleString('id-ID')}`;
+        document.getElementById('keuanganBersih').innerText = `Rp ${pendapatanBersih.toLocaleString('id-ID')}`;
+        document.getElementById('keuanganQrisGroup1').innerText = `Rp ${qrisGroup1.toLocaleString('id-ID')}`;
+        
+        document.getElementById('keuanganPemasukanLainList').innerHTML = pemasukanHtml;
+        document.getElementById('keuanganPengeluaranList').innerHTML = pengeluaranHtml;
     }
 </script>
 </body>
